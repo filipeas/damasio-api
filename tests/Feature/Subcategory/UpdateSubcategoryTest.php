@@ -1,0 +1,254 @@
+<?php
+
+namespace Tests\Feature\Subcategory;
+
+use App\Category;
+use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Passport\Passport;
+use Tests\TestCase;
+
+class UpdateSubcategoryTest extends TestCase
+{
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->artisan('migrate:fresh');
+        $this->seed([
+            'CreateUsersSeeder',
+        ]);
+    }
+
+    /**
+     * @test
+     * @group Subcategory
+     */
+    public function atualizandoSubcategoria()
+    {
+        $this->artisan('passport:install');
+
+        Passport::actingAs(
+            User::where('email', 'user@user.com')->first(),
+            // ['token']
+        );
+
+        // criando categoria
+        $this->post(
+            'api/user/category',
+            [
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando categorias cadastradas
+        $this->assertEquals(1, Category::whereNull('parent')->count());
+
+        // criando subcategoria
+        $this->post(
+            'api/user/subcategory',
+            [
+                'parent' => 1,
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando subcategorias cadastradas
+        $this->assertEquals(1, Category::whereNotNull('parent')->count());
+
+        // atualizando subcategoria
+        $this->put(
+            'api/user/subcategory/1',
+            [
+                'parent' => 1,
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+    }
+
+    /**
+     * @test
+     * @group Subcategory
+     */
+    public function atualizandoSubcategoriaSemParent()
+    {
+        $this->artisan('passport:install');
+
+        Passport::actingAs(
+            User::where('email', 'user@user.com')->first(),
+            // ['token']
+        );
+
+        // criando categoria
+        $this->post(
+            'api/user/category',
+            [
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando categorias cadastradas
+        $this->assertEquals(1, Category::whereNull('parent')->count());
+
+        // criando subcategoria
+        $this->post(
+            'api/user/subcategory',
+            [
+                'parent' => 1,
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando subcategorias cadastradas
+        $this->assertEquals(1, Category::whereNotNull('parent')->count());
+
+        // atualizando subcategoria
+        $this->put(
+            'api/user/subcategory/1',
+            [
+                // 'parent' => 1,
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(422)
+            ->assertJsonStructure(['errors', 'message']);
+    }
+
+    /**
+     * @test
+     * @group Subcategory
+     */
+    public function atualizandoSubcategoriaSemTitle()
+    {
+        $this->artisan('passport:install');
+
+        Passport::actingAs(
+            User::where('email', 'user@user.com')->first(),
+            // ['token']
+        );
+
+        // criando categoria
+        $this->post(
+            'api/user/category',
+            [
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando categorias cadastradas
+        $this->assertEquals(1, Category::whereNull('parent')->count());
+
+        // criando subcategoria
+        $this->post(
+            'api/user/subcategory',
+            [
+                'parent' => 1,
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando subcategorias cadastradas
+        $this->assertEquals(1, Category::whereNotNull('parent')->count());
+
+        // atualizando subcategoria
+        $this->put(
+            'api/user/subcategory/1',
+            [
+                'parent' => 1,
+                'title' => '',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(422)
+            ->assertJsonStructure(['errors', 'message']);
+    }
+
+    /**
+     * @test
+     * @group Subcategory
+     */
+    public function criandoSubcategoriaComTitleAcimaDe30Caracteres()
+    {
+        $this->artisan('passport:install');
+
+        Passport::actingAs(
+            User::where('email', 'user@user.com')->first(),
+            // ['token']
+        );
+
+        // criando categoria
+        $this->post(
+            'api/user/category',
+            [
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando categorias cadastradas
+        $this->assertEquals(1, Category::whereNull('parent')->count());
+
+        // criando subcategoria
+        $this->post(
+            'api/user/subcategory',
+            [
+                'parent' => 1,
+                'title' => 'categoria 1',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(200)
+            ->assertJsonStructure(['success', 'data', 'message']);
+
+        // contando subcategorias cadastradas
+        $this->assertEquals(1, Category::whereNotNull('parent')->count());
+
+        // atualizando subcategoria
+        $this->put(
+            'api/user/subcategory/1',
+            [
+                'parent' => 1,
+                'title' => '123456789123456789123456789123456789123456789123456789',
+            ],
+            ['Accept' => 'application/json']
+        )
+            // ->dump()
+            ->assertStatus(422)
+            ->assertJsonStructure(['errors', 'message']);
+    }
+}
