@@ -22,4 +22,6 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth:api']], function () {
     Route::get('/product/bysubcategory/{subcategory}', 'API\ProductController@listBySubcategory');
     Route::post('/product/{product}/image', 'API\ProductController@storeImage');
     Route::post('/product/{product}/brands', 'API\ProductController@UpdateBrands');
+    // CRUD DE MANIPULAÇÃO DAS IMPORTAÇÕES DAS PLANILHAS XML DE OUTRO SISTEMA
+    Route::post('/import/xml', 'API\SpreadsheetImport@XMLFileImport');
 });

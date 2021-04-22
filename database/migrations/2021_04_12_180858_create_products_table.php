@@ -17,9 +17,9 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('cod');
             $table->unsignedBigInteger('subcategory');
-            $table->unsignedBigInteger('group');
-            $table->string('description');
-            $table->string('application');
+            $table->unsignedBigInteger('group')->nullable();
+            $table->text('description');
+            $table->text('application');
             $table->string('cover')->nullable();
             $table->timestamps();
 

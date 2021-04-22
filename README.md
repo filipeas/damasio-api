@@ -20,5 +20,9 @@ Execute os comandos abaixo dentro do diretório do projeto, no servidor:
 ``` php artisan vendor:publish --tag=passport-config ``` <br>
 ``` php artisan storage:link ``` <br>
 
+## Configurações do php
+Deve manipulados as seguintes variáveis de ambiente do arquivo php.ini:
+``` post_max_size = 40M ```
+``` upload_max_filesize = 10M ```
 ## Como executar testes
 ``` .\vendor\bin\phpunit .\tests\Feature\ ```

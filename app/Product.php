@@ -17,7 +17,7 @@ class Product extends Model
     ];
 
     protected $fillable = [
-        'cod', 'category', 'group', 'description', 'application', 'cover',
+        'cod', 'subcategory', 'group', 'description', 'application', 'cover',
     ];
 
     // retorna subcategoria do produto
