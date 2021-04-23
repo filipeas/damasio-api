@@ -10,7 +10,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Requests\XMLFileImport;
 use App\Product;
 use Exception;
-use Illuminate\Support\Facades\Artisan;
+use App\Jobs\GeneratePDF as JobsGeneratePDF;
 
 class SpreadsheetImport extends BaseController
 {
@@ -112,9 +112,10 @@ class SpreadsheetImport extends BaseController
             return $this->sendError('Ocorreu um erro na inserção dos vinculos entre produtos e marcas. Verifique com o suporte' . ' erro: ' . $ex->getMessage());
         }
 
-        // realizando chamada de job para executar a criação dos PDF's
+        // realizando chamada de job para executar a criação dos PDF's e enviar a fila de processos
+        JobsGeneratePDF::dispatch();
 
-        return $this->sendResponse([], 'Atualização do banco de dados realizada com sucesso');
+        return $this->sendResponse([], "Atualização do banco de dados realizada com sucesso. Gerando PDF's");
     }
 
     /** FUNÇÕES PRIVADAS */

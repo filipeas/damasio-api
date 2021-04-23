@@ -13,4 +13,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/generate/pdf/all','API\GeneratePDF@generateAllPDF');

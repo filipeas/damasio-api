@@ -25,6 +25,5 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth:api']], function () {
     // CRUD DE MANIPULAÇÃO DAS IMPORTAÇÕES DAS PLANILHAS XML DE OUTRO SISTEMA
     Route::post('/import/xml', 'API\SpreadsheetImport@XMLFileImport');
     // MANIPULAR GERAÇÃO DE ARQUIVOS PDF
-    // Route::get('/generate/pdf/all','API\GeneratePDF@generateAllPDF'); // virou um job
     Route::get('/progress/generation/pdf','API\GeneratePDF@progressGeneration');
 });
