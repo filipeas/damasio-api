@@ -15,7 +15,7 @@ class Category extends Model
     ];
 
     protected $fillable = [
-        'parent', 'title',
+        'parent', 'title', 'pdf',
     ];
 
     // retorna produtos da subcategoria atual
@@ -66,8 +66,12 @@ class Category extends Model
     // retorna subcategorias da categoria atual
     public function subcategories()
     {
-        return Category::where('id', $this->id)->whereNotNull('parent');
+        return $this->hasMany(Category::class, 'parent', 'id');
     }
+    // public function subcategories()
+    // {
+    //     return Category::where('id', $this->id)->whereNotNull('parent');
+    // }
 
     // método de callback para exclusão em cascata
     public static function boot()

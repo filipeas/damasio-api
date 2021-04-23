@@ -112,6 +112,8 @@ class SpreadsheetImport extends BaseController
             return $this->sendError('Ocorreu um erro na inserção dos vinculos entre produtos e marcas. Verifique com o suporte' . ' erro: ' . $ex->getMessage());
         }
 
+        // realizando chamada de job para executar a criação dos PDF's
+
         return $this->sendResponse([], 'Atualização do banco de dados realizada com sucesso');
     }
 

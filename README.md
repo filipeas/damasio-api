@@ -20,9 +20,17 @@ Execute os comandos abaixo dentro do diretório do projeto, no servidor:
 ``` php artisan vendor:publish --tag=passport-config ``` <br>
 ``` php artisan storage:link ``` <br>
 
+* Configurações do DomPDF
+``` php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider" ``` <br>
+
 ## Configurações do php
 Deve manipulados as seguintes variáveis de ambiente do arquivo php.ini:
 ``` post_max_size = 40M ```
 ``` upload_max_filesize = 10M ```
+``` memory_limit = 1024M ```
+
+* OBS1: Em caso de atualização em massa das imagens dos produtos ou das marcas, seguindo novos produtos inseridos através da planilha, as atualizações devem ser feitas diretamente do diretório 'storage/app/public/'. Aqui está armazenado os dois diretórios 'marcas/' que armazena todas as imagens das marcas e 'produtos/' que armazena todas as imagens dos produtos.
+* OBS2: No diretório 'storage/' há o diretório 'fonts/'. É nesse diretório onde é inserido as fontes que poderão ser usadas na geração do PDF.
+
 ## Como executar testes
 ``` .\vendor\bin\phpunit .\tests\Feature\ ```
