@@ -16,10 +16,11 @@ class Product extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'category' => new Category($this->resource->categoryParent()->first()),
-            'subcategory' => new Category($this->resource->category()->first()),
+            'cod' => $this->resource->cod,
+            // 'category' => new Category($this->resource->categoryParent()->first()),
+            'subcategory' => new SubcategoryOnly($this->resource->category()->first()),
             'brands' => Brand::collection($this->resource->brands()->get()),
-            'cover' => asset('storage' . $this->resource->cover),
+            'cover' => asset('storage/' . $this->resource->cover),
             'description' => $this->resource->description,
             'application' => $this->resource->application,
             // 'created_at' => $this->resource->created_at->format('d/m/Y'),

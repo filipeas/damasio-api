@@ -8,6 +8,7 @@ use App\Http\Requests\StoreCategory;
 use App\Http\Requests\StorePDFForACategory;
 use App\Http\Requests\UpdateCategory;
 use App\Http\Resources\Category as CategoryResource;
+use App\Http\Resources\CategoryWithSubCategories;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
@@ -35,7 +36,7 @@ class CategoryController extends BaseController
     {
         return $this->sendResponse(
             [
-                'categories' => CategoryResource::collection(Category::whereNull('parent')->get()),
+                'categories' => CategoryResource::collection(Category::whereNull('parent')->orderBy('title', 'ASC')->get()),
             ],
             'Categorias encontradas con sucesso',
         );
@@ -99,7 +100,7 @@ class CategoryController extends BaseController
 
         return $this->sendResponse(
             [
-                'category' => new CategoryResource($category),
+                'category' => new CategoryWithSubCategories($category),
             ],
             'Categoria encontrada com sucesso'
         );

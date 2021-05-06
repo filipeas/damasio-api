@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', 'API\AuthController@login');
 Route::post('logout', 'API\AuthController@logout');
 
+// ROTAS PÚBLICAS
+Route::get('/show-all-categories', 'API\CategoryController@index');
+Route::get('/category/{category}/show', 'API\CategoryController@show');
+Route::get('/subcategory/{subcategory}/show', 'API\SubcategoryController@show');
+Route::get('/product/{product}/show', 'API\ProductController@show');
+
 Route::group(['prefix' => 'user', 'middleware' => ['auth:api']], function () {
     // CRUD DAS CATEGORIAS
     Route::resource('/category', 'API\CategoryController');

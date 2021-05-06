@@ -13,3 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', 'WEB\HomepageController@home')->name('site.home');
+Route::get('/categoria/{category}/visualizar', 'WEB\HomepageController@showCategory')->name('site.category');
+Route::get('/subcategoria/{subcategory}/visualizar/{page}', 'WEB\HomepageController@showSubcategory')->name('site.subcategory');
+Route::get('/produto/{product}/visualizar', 'WEB\HomepageController@showProduct')->name('site.product');

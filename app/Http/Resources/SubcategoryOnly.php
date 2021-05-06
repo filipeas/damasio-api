@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Category extends JsonResource
+class SubcategoryOnly extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +17,7 @@ class Category extends JsonResource
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
-            'pdf' => asset('storage/' . $this->resource->pdf),
-            'cover' => asset('storage/' . $this->resource->productsOfCategory()->first()->cover),
+            'cover' => asset('storage/' . $this->resource->productsOfSubcategory()->skip(1)->first()->cover),
             'created_at' => $this->resource->created_at->format('d/m/Y'),
             'updated_at' => $this->resource->updated_at->format('d/m/Y'),
         ];

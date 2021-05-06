@@ -7,14 +7,24 @@ Tenha certeza que o servidor de produção possui:
 - Instalar composer.
 - Instalar git.
 
+* Configuração específica para problemas com MySQL desatualizado
+Após essas configurações básicas, na pasta App/Providers, abra a classe AppServiceProvider, dentro do método boot adicione o seguinte:
+``` \Illuminate\Support\Facades\Schema::defaultStringLength(191); ```
+Essa configuração só é necessária caso o mysql esteja em versões menores que 5.7.
+
+* Configuração necessária para forçar aplicação a rodar na versão do PHP correta
+No servidor da Hostgator é necessário inserir o seguinte comando no .htaccess, abaixo de RewriteEngine On, da pasta public do projeto (PS: deve ser identado esse código para que não haja erros):
+``` <IfModule mime_module> AddHandler application/x-httpd-ea-php73 .php .php7 .phtml </IfModule>  ```
+Esse comando irá setar o php 7.3 á execução do projeto.
+
 # Configurações no servidor
-Execute os comandos abaixo dentro do diretório do projeto, no servidor:
+Execute os comandos abaixo dentro do diretório do projeto, no servidor  (execute na sequencia):
 ``` composer install ``` <br>
 ``` npm run dev ``` <br>
+``` php artisan key:generate ``` <br>
 ``` php artisan cache:clear ``` <br>
 ``` php artisan config:clear ``` <br>
 ``` php artisan migrate ``` <br>
-``` php artisan key:generate ``` <br>
 ``` php artisan passport:install ``` <br>
 ``` php artisan passport:keys ``` <br>
 ``` php artisan vendor:publish --tag=passport-config ``` <br>

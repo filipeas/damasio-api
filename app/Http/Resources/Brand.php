@@ -18,7 +18,7 @@ class Brand extends JsonResource
             'id' => $this->resource->id,
             'code' => $this->resource->code,
             'title' => $this->resource->title,
-            'image' => asset('storage' . $this->resource->image),
+            'image' => asset('storage/' . $this->resource->image),
             // 'created_at' => $this->resource->created_at->format('d/m/Y'),
             // 'updated_at' => $this->resource->updated_at->format('d/m/Y'),
         ];
