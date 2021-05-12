@@ -68,10 +68,20 @@ class GeneratePDF implements ShouldQueue
             $pdf = PDF::loadView('index', ['categories' => $category, 'page' => $pagina]);
 
             $path = public_path('storage/pdfs');
+            $path_fixed_pages = public_path('storage/fixed pages');
             $fileName =  $category->title . '.' . 'pdf';
 
             $pdf->save($path . '/' . $fileName);
-            array_push($pdfs, $path . '/' . $fileName);
+            // array_push($pdfs, $path . '/' . $fileName);
+
+            // colocando paginas fixas no inicio no PDF gerado
+            $pdfMerger = PDFMerger::init();
+
+            $pdfMerger->addPDF($path_fixed_pages . '/paginas-fixas.pdf', 'all');
+            $pdfMerger->addPDF($path . '/' . $fileName, 'all');
+
+            $pdfMerger->merge();
+            $pdfMerger->save(public_path('storage/pdfs/' .  $fileName), "file");
 
             // ajustando contagem de páginas para inserir a pagina atual correta no proximo loop
             $countProducts = Product::where('subcategory', $category->id)->count();
@@ -87,13 +97,13 @@ class GeneratePDF implements ShouldQueue
             $category->save();
         }
 
-        $pdfMerger = PDFMerger::init();
+        // $pdfMerger = PDFMerger::init();
 
-        foreach ($pdfs as $newpdf) {
-            $pdfMerger->addPDF($newpdf, 'all');
-        }
+        // foreach ($pdfs as $newpdf) {
+        //     $pdfMerger->addPDF($newpdf, 'all');
+        // }
 
-        $pdfMerger->merge();
-        $pdfMerger->save(public_path('storage/pdfs/catalogo_completo.pdf'), "file");
+        // $pdfMerger->merge();
+        // $pdfMerger->save(public_path('storage/pdfs/catalogo_completo.pdf'), "file");
     }
 }

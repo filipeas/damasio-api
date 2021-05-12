@@ -79,11 +79,16 @@ class Category extends Model
         parent::boot();
 
         self::deleting(function (Category $category) {
-            // remove produtos
-            $category->products()->delete();
+            if ($category->parent == null) {
+                // remove produtos
+                $category->products()->delete();
 
-            // remove subcategorias
-            $category->parent()->delete();
+                // remove subcategorias
+                $category->parent()->delete();
+            } else {
+                // remove produtos
+                $category->products()->delete();
+            }
         });
     }
 }

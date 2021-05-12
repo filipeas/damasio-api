@@ -76,7 +76,7 @@ class BrandController extends BaseController
 
         $image = $request->file('image');
         $name = Str::slug($brand->title . time());
-        $folder = '/uploads/marcas/';
+        $folder = '/marcas/';
         $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
         $this->uploadOne($image, $folder, 'public', $name);
         $brand->image = $filePath;
@@ -120,11 +120,10 @@ class BrandController extends BaseController
     {
         $brand = Brand::where('id', $brand)->first();
 
-        if (is_null($brand)) {
+        if (is_null($brand))
             return $this->sendError('Marca não encontrada');
-        }
 
-        // $brand->code = $request->code;
+        $brand->code = $request->code;
         $brand->title = $request->title;
         $brand->save();
 

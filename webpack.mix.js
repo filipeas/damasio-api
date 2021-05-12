@@ -14,6 +14,7 @@ const mix = require('laravel-mix');
 mix
     .sass('resources/views/scss/bootstrap.scss', 'public/site/style.css')
     .sass('node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss', 'public/site/fontawesome.css')
+    .sass('resources/views/scss/style_login.scss', 'public/site/style_login.css')
 
     .scripts('node_modules/jquery/dist/jquery.js', 'public/site/jquery.js')
     .scripts('node_modules/jquery-form/dist/jquery.form.min.js', 'public/site/jquery-form.js')

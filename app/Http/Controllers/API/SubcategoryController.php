@@ -8,6 +8,7 @@ use App\Http\Requests\StoreSubcategory;
 use App\Http\Requests\UpdateSubcategory;
 use App\Http\Resources\Subcategory as SubCategoryResource;
 use App\Http\Resources\SubcategoryWithProducts;
+use Illuminate\Support\Facades\DB;
 
 class SubcategoryController extends BaseController
 {

@@ -20,7 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->string('pdf')->nullable();
             $table->timestamps();
 
-            $table->foreign('parent')->references('id')->on('categories')->onDelete('CASCADE');
+            $table->foreign('parent')->references('id')->on('categories');//->onDelete('CASCADE');
         });
     }
 

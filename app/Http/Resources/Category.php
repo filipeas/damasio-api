@@ -18,7 +18,7 @@ class Category extends JsonResource
             'id' => $this->resource->id,
             'title' => $this->resource->title,
             'pdf' => asset('storage/' . $this->resource->pdf),
-            'cover' => asset('storage/' . $this->resource->productsOfCategory()->first()->cover),
+            'cover' => (is_null($this->resource->productsOfCategory()->first()) ? null : asset('storage/' . $this->resource->productsOfCategory()->first()->cover)),
             'created_at' => $this->resource->created_at->format('d/m/Y'),
             'updated_at' => $this->resource->updated_at->format('d/m/Y'),
         ];

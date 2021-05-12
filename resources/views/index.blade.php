@@ -305,7 +305,7 @@ set_time_limit(0);
 
         .barra_topo {
             width: 100%;
-            height: 20px;
+            height: 30px;
             top: 0px;
             left: 0;
             right: 0;
@@ -357,17 +357,30 @@ set_time_limit(0);
         .titulo_topo {
             z-index: 9;
             position: absolute;
-            margin-top: 15px;
-            width: 24% !important;
-            margin-left: 520px;
-            border-top: 30px solid #FF0000;
+            margin-top: 10px;
+            /* width: 24% !important; */
+            margin-left: 570px;
+            border-top: 30px solid transparent;
             border-left: 15px solid transparent;
             border-right: 15px solid transparent;
         }
 
-        .titulo_topo h4 {
+        .titulo_topo_esquerda {
+            z-index: 9;
+            position: absolute;
+            margin-top: 10px;
+            width: 10% !important;
+            /* margin-left: 570px; */
+            border-top: 30px solid transparent;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+        }
+
+        .titulo_topo h5,
+        .titulo_topo_esquerda h5 {
             margin-top: -30px !important;
-            font-size: 16px;
+            font-style: normal;
+            font-size: 12px;
             color: #fff;
             text-align: center;
         }
@@ -376,16 +389,29 @@ set_time_limit(0);
             z-index: 9;
             position: absolute;
             width: 10% !important;
-            margin-left: 670px;
-            margin-top: 1058px !important;
-            border-top: 30px solid #FF0000;
+            /* margin-left: 670px; */
+            margin-top: 1085px !important;
+            border-top: 30px solid transparent;
             border-left: -15px solid transparent;
             border-right: -15px solid transparent;
         }
 
-        .numero_pagina h4 {
+        .numero_pagina_esquerda {
+            z-index: 9;
+            position: absolute;
+            width: 10% !important;
+            margin-left: 670px;
+            margin-top: 1085px !important;
+            border-top: 30px solid transparent;
+            border-left: -15px solid transparent;
+            border-right: -15px solid transparent;
+        }
+
+        .numero_pagina h4,
+        .numero_pagina_esquerda h4 {
             margin-top: -30px !important;
-            font-size: 1.2em;
+            font-style: normal;
+            font-size: 12px;
             color: #fff;
             text-align: center;
         }
@@ -543,8 +569,8 @@ set_time_limit(0);
     ?>
 
     <!-- barra azul que fica no topo da página -->
-    <!-- <div class="barra_topo"></div> -->
-    <div class="barra_topo_sem_cor"></div>
+    <div class="barra_topo"></div>
+    {{-- <div class="barra_topo_sem_cor"></div> --}}
 
 
     @foreach($categories->subcategories()->orderBy('title', 'ASC')->get() as $subcategory)
@@ -561,12 +587,13 @@ set_time_limit(0);
     <!-- {{--$category->product()->count() > 10--}} -->
     <!-- {{--@if(($category->product()->count() > 10 && $line == 1))--}} -->
     <!-- título do topo da página -->
-    <!-- <div class="titulo_topo">
-        <h4>{{--$category->title--}}</h4>
-    </div>
-    {{--@else--}}
+    {{-- <div class="titulo_topo">
+        <h4>{{ $subcategory->title }}</h4>
+    </div> --}}
+    {{-- @else
     <div class="titulo_topo_para_espacamento"></div>
-    {{--@endif--}} -->
+    @endif --}}
+    <!-- título do topo da página -->
 
     <!-- titulo da categoria no corpo da pagina -->
     @if($line == 1)
@@ -593,7 +620,7 @@ set_time_limit(0);
 
     <?php
     // para testes
-    // $parada3 = 14;
+    // $parada3 = 10; // p/ testes
     // posicao dos blocos
     $pos11 = $pos12 = $pos13 = 0;
     $pos21 = $pos22 = $pos23 = 0;
@@ -772,8 +799,33 @@ set_time_limit(0);
                     $line = 1;
                     ?>
                     <!-- barra azul que fica no rodappe da página -->
-                    <!-- <div class="barra_rodape"></div> -->
-                    <div class="barra_rodape_sem_cor"></div>
+                    <div class="barra_rodape"></div>
+                    {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+                    {{-- coloca numero da pagina no local certo --}}
+                    @if($pageNumber % 2 == 0)
+                    <!-- número da página -->
+                    <div class="numero_pagina_esquerda">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @else
+                    <!-- número da página -->
+                    <div class="numero_pagina">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @endif
+
+                    {{-- coloca titulo da pagina no local correto --}}
+                    @if($pageNumber % 2 == 0)
+                    <div class="titulo_topo_esquerda">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @else
+                    <div class="titulo_topo">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @endif
+                    
                     <!-- salta-página -->
                     <div class="page_break"></div>
                     <?php
@@ -797,8 +849,33 @@ set_time_limit(0);
                     $line = 1;
                     ?>
                     <!-- barra azul que fica no rodappe da página -->
-                    <!-- <div class="barra_rodape"></div> -->
-                    <div class="barra_rodape_sem_cor"></div>
+                    <div class="barra_rodape"></div>
+                    {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+                    {{-- coloca numero da pagina no local certo --}}
+                    @if($pageNumber % 2 == 0)
+                    <!-- número da página -->
+                    <div class="numero_pagina_esquerda">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @else
+                    <!-- número da página -->
+                    <div class="numero_pagina">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @endif
+
+                    {{-- coloca titulo da pagina no local correto --}}
+                    @if($pageNumber % 2 == 0)
+                    <div class="titulo_topo_esquerda">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @else
+                    <div class="titulo_topo">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @endif
+
                     <!-- salta-página -->
                     <div class="page_break"></div>
                     <?php
@@ -822,8 +899,33 @@ set_time_limit(0);
                     $line = 1;
                     ?>
                     <!-- barra azul que fica no rodappe da página -->
-                    <!-- <div class="barra_rodape"></div> -->
-                    <div class="barra_rodape_sem_cor"></div>
+                    <div class="barra_rodape"></div>
+                    {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+                    {{-- coloca numero da pagina no local certo --}}
+                    @if($pageNumber % 2 == 0)
+                    <!-- número da página -->
+                    <div class="numero_pagina_esquerda">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @else
+                    <!-- número da página -->
+                    <div class="numero_pagina">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @endif
+
+                    {{-- coloca titulo da pagina no local correto --}}
+                    @if($pageNumber % 2 == 0)
+                    <div class="titulo_topo_esquerda">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @else
+                    <div class="titulo_topo">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @endif
+
                     <!-- salta-página -->
                     <div class="page_break"></div>
                     <?php
@@ -847,8 +949,33 @@ set_time_limit(0);
                     $line = 1;
                     ?>
                     <!-- barra azul que fica no rodappe da página -->
-                    <!-- <div class="barra_rodape"></div> -->
-                    <div class="barra_rodape_sem_cor"></div>
+                    <div class="barra_rodape"></div>
+                    {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+                    {{-- coloca numero da pagina no local certo --}}
+                    @if($pageNumber % 2 == 0)
+                    <!-- número da página -->
+                    <div class="numero_pagina_esquerda">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @else
+                    <!-- número da página -->
+                    <div class="numero_pagina">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @endif
+
+                    {{-- coloca titulo da pagina no local correto --}}
+                    @if($pageNumber % 2 == 0)
+                    <div class="titulo_topo_esquerda">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @else
+                    <div class="titulo_topo">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @endif
+
                     <!-- salta-página -->
                     <div class="page_break"></div>
                     <?php
@@ -872,8 +999,33 @@ set_time_limit(0);
                     $line = 1;
                     ?>
                     <!-- barra azul que fica no rodappe da página -->
-                    <!-- <div class="barra_rodape"></div> -->
-                    <div class="barra_rodape_sem_cor"></div>
+                    <div class="barra_rodape"></div>
+                    {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+                    {{-- coloca numero da pagina no local certo --}}
+                    @if($pageNumber % 2 == 0)
+                    <!-- número da página -->
+                    <div class="numero_pagina_esquerda">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @else
+                    <!-- número da página -->
+                    <div class="numero_pagina">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @endif
+
+                    {{-- coloca titulo da pagina no local correto --}}
+                    @if($pageNumber % 2 == 0)
+                    <div class="titulo_topo_esquerda">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @else
+                    <div class="titulo_topo">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @endif
+
                     <!-- salta-página -->
                     <div class="page_break"></div>
                     <?php
@@ -897,8 +1049,34 @@ set_time_limit(0);
                     $line = 1;
                     ?>
                     <!-- barra azul que fica no rodappe da página -->
-                    <!-- <div class="barra_rodape"></div> -->
-                    <div class="barra_rodape_sem_cor"></div>
+                    <div class="barra_rodape"></div>
+                    {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+                    {{-- coloca numero da pagina no local certo --}}
+                    @if($pageNumber % 2 == 0)
+                    <!-- número da página -->
+                    <div class="numero_pagina_esquerda">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @else
+                    <!-- número da página -->
+                    <div class="numero_pagina">
+                        <h4>{{ ++$pageNumber }}</h4>
+                    </div>
+                    @endif
+
+                    {{-- coloca titulo da pagina no local correto --}}
+                    @if($pageNumber % 2 == 0)
+                    <div class="titulo_topo_esquerda">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @else
+                    <div class="titulo_topo">
+                        <h5>{{ $subcategory->title }}</h5>
+                    </div>
+                    @endif
+
+
                     <!-- salta-página -->
                     <div class="page_break"></div>
                     <?php
@@ -973,6 +1151,7 @@ set_time_limit(0);
 
             
         ?>
+
 
         <!-- produto -->
         <div class="produto col-md-4 text-center card-pdf-1{{ $line }}" 
@@ -1067,8 +1246,33 @@ set_time_limit(0);
             $line = 0;
             ?>
             <!-- barra azul que fica no rodappe da página -->
-            <!-- <div class="barra_rodape"></div> -->
-            <div class="barra_rodape_sem_cor"></div>
+            <div class="barra_rodape"></div>
+            {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+            {{-- coloca numero da pagina no local certo --}}
+            @if($pageNumber % 2 == 0)
+            <!-- número da página -->
+            <div class="numero_pagina_esquerda">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @else
+            <!-- número da página -->
+            <div class="numero_pagina">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @endif
+
+            {{-- coloca titulo da pagina no local correto --}}
+            @if($pageNumber % 2 == 0)
+            <div class="titulo_topo_esquerda">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @else
+            <div class="titulo_topo">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @endif
+
             <!-- salta-página -->
             <div class="page_break"></div>
             <?php
@@ -1082,15 +1286,40 @@ set_time_limit(0);
             $line = 1;
             ?>
                 <!-- barra azul que fica no rodappe da página -->
-                <!-- <div class="barra_rodape"></div> -->
-                <div class="barra_rodape_sem_cor"></div>
+                <div class="barra_rodape"></div>
+                {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+                {{-- coloca numero da pagina no local certo --}}
+                @if($pageNumber % 2 == 0)
+                <!-- número da página -->
+                <div class="numero_pagina_esquerda">
+                    <h4>{{ ++$pageNumber }}</h4>
+                </div>
+                @else
+                <!-- número da página -->
+                <div class="numero_pagina">
+                    <h4>{{ ++$pageNumber }}</h4>
+                </div>
+                @endif
+
+                {{-- coloca titulo da pagina no local correto --}}
+                @if($pageNumber % 2 == 0)
+                <div class="titulo_topo_esquerda">
+                    <h5>{{ $subcategory->title }}</h5>
+                </div>
+                @else
+                <div class="titulo_topo">
+                    <h5>{{ $subcategory->title }}</h5>
+                </div>
+                @endif
+
                 <!-- salta-página -->
                 <div class="page_break"></div>
             
             <!-- número da página -->
-            <!-- <div class="numero_pagina">
-                <h4>{{--$pageNumber--}}</h4>
-            </div> -->
+            {{-- <div class="numero_pagina">
+                <h4>{{ $pageNumber }}</h4>
+            </div> --}}
         <!-- caso a lista de produtos da subcategoria acabe na segunda linha (entre os blocos 4, 5 e 6) -->
         @elseif($lastBlock == $loop->count && ($line == 4 || $line == 5 || $line == 6))
             <?php
@@ -1098,15 +1327,40 @@ set_time_limit(0);
             $line = 1;
             ?>
             <!-- barra azul que fica no rodappe da página -->
-            <!-- <div class="barra_rodape"></div> -->
-            <div class="barra_rodape_sem_cor"></div>
+            <div class="barra_rodape"></div>
+            {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+            {{-- coloca numero da pagina no local certo --}}
+            @if($pageNumber % 2 == 0)
+            <!-- número da página -->
+            <div class="numero_pagina_esquerda">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @else
+            <!-- número da página -->
+            <div class="numero_pagina">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @endif
+
+            {{-- coloca titulo da pagina no local correto --}}
+            @if($pageNumber % 2 == 0)
+            <div class="titulo_topo_esquerda">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @else
+            <div class="titulo_topo">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @endif
+
             <!-- salta-página -->
             <div class="page_break"></div>
 
             <!-- número da página -->
-            <!-- <div class="numero_pagina">
-                <h4>{{--$pageNumber--}}</h4>
-            </div> -->
+            {{-- <div class="numero_pagina">
+                <h4>{{ $pageNumber }}</h4>
+            </div> --}}
         <!-- caso a lista de produtos da subcategoria acabe na terceira linha (entre os blocos 7, 8 e 9) -->
         @elseif($lastBlock == $loop->count && ($line == 7 || $line == 8 || $line == 9))
             <?php
@@ -1114,15 +1368,40 @@ set_time_limit(0);
             $line = 1;
             ?>
             <!-- barra azul que fica no rodappe da página -->
-            <!-- <div class="barra_rodape"></div> -->
-            <div class="barra_rodape_sem_cor"></div>
+            <div class="barra_rodape"></div>
+            {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+            {{-- coloca numero da pagina no local certo --}}
+            @if($pageNumber % 2 == 0)
+            <!-- número da página -->
+            <div class="numero_pagina_esquerda">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @else
+            <!-- número da página -->
+            <div class="numero_pagina">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @endif
+
+            {{-- coloca titulo da pagina no local correto --}}
+            @if($pageNumber % 2 == 0)
+            <div class="titulo_topo_esquerda">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @else
+            <div class="titulo_topo">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @endif
+
             <!-- salta-página -->
             <div class="page_break"></div>
 
             <!-- número da página -->
-            <!-- <div class="numero_pagina">
-                <h4>{{--$pageNumber--}}</h4>
-            </div> -->
+            {{-- <div class="numero_pagina">
+                <h4>{{ $pageNumber }}</h4>
+            </div> --}}
         <!-- caso a lista de produtos da subcategoria acabe na quarta linha (entre os blocos 10, 11 e 12) -->
         @elseif($lastBlock == $loop->count && ($line == 10 || $line == 11 || $line == 12))
             <?php
@@ -1130,8 +1409,33 @@ set_time_limit(0);
             $line = 1;
             ?>
             <!-- barra azul que fica no rodappe da página -->
-            <!-- <div class="barra_rodape"></div> -->
-            <div class="barra_rodape_sem_cor"></div>
+            <div class="barra_rodape"></div>
+            {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+            {{-- coloca numero da pagina no local certo --}}
+            @if($pageNumber % 2 == 0)
+            <!-- número da página -->
+            <div class="numero_pagina_esquerda">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @else
+            <!-- número da página -->
+            <div class="numero_pagina">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @endif
+
+            {{-- coloca titulo da pagina no local correto --}}
+            @if($pageNumber % 2 == 0)
+            <div class="titulo_topo_esquerda">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @else
+            <div class="titulo_topo">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @endif
+
             <!-- salta-página -->
             <div class="page_break"></div>
         <!-- caso a lista de produtos da subcategoria acabe na quarta linha e exatamente em cima do item 12 -->
@@ -1141,8 +1445,33 @@ set_time_limit(0);
             $line = 1;
             ?>
             <!-- barra azul que fica no rodappe da página -->
-            <!-- <div class="barra_rodape"></div> -->
-            <div class="barra_rodape_sem_cor"></div>
+            <div class="barra_rodape"></div>
+            {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+            {{-- coloca numero da pagina no local certo --}}
+            @if($pageNumber % 2 == 0)
+            <!-- número da página -->
+            <div class="numero_pagina_esquerda">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @else
+            <!-- número da página -->
+            <div class="numero_pagina">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @endif
+
+            {{-- coloca titulo da pagina no local correto --}}
+            @if($pageNumber % 2 == 0)
+            <div class="titulo_topo_esquerda">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @else
+            <div class="titulo_topo">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @endif
+
             <!-- salta-página -->
             <div class="page_break"></div>
         <!-- caso a lista de produtos da subcategoria não acabe na quarta linha e o line esteja no item 12 -->
@@ -1152,18 +1481,43 @@ set_time_limit(0);
             $line = 0;
             ?>
             <!-- barra azul que fica no rodappe da página -->
-            <!-- <div class="barra_rodape"></div> -->
-            <div class="barra_rodape_sem_cor"></div>
+            <div class="barra_rodape"></div>
+            {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+            {{-- coloca numero da pagina no local certo --}}
+            @if($pageNumber % 2 == 0)
+            <!-- número da página -->
+            <div class="numero_pagina_esquerda">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @else
+            <!-- número da página -->
+            <div class="numero_pagina">
+                <h4>{{ ++$pageNumber }}</h4>
+            </div>
+            @endif
+
+            {{-- coloca titulo da pagina no local correto --}}
+            @if($pageNumber % 2 == 0)
+            <div class="titulo_topo_esquerda">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @else
+            <div class="titulo_topo">
+                <h5>{{ $subcategory->title }}</h5>
+            </div>
+            @endif
+
             <!-- salta-página -->
             <div class="page_break"></div>
         @endif
-    
+
     @endforeach
     
     <!-- número da página -->
-    <!-- <div class="numero_pagina">
-        <h4>{{--++$pageNumber--}}</h4>
-    </div> -->
+    {{-- <div class="numero_pagina">
+        <h4>{{ ++$pageNumber }}</h4>
+    </div> --}}
 
     <!-- salta-página -->
     <!-- <div class="page_break"></div> -->
@@ -1171,8 +1525,31 @@ set_time_limit(0);
     @endforeach
 
     <!-- barra azul que fica no rodappe da página -->
-    <!-- <div class="barra_rodape"></div> -->
-    <div class="barra_rodape_sem_cor"></div>
+    {{-- <div class="barra_rodape"></div> --}}
+    {{-- <div class="barra_rodape_sem_cor"></div> --}}
+
+    {{-- coloca numero da pagina no local certo --}}
+    {{-- @if($pageNumber % 2 == 0)
+    <!-- número da página -->
+    <div class="numero_pagina_esquerda">
+        <h4>{{ ++$pageNumber }}</h4>
+    </div>
+    @else
+    <!-- número da página -->
+    <div class="numero_pagina">
+        <h4>{{ ++$pageNumber }}</h4>
+    </div>
+    @endif --}}
+
+    {{-- @if($pageNumber % 2 == 0)
+    <div class="titulo_topo_esquerda">
+        <h5>{{ $subcategory->title }}</h5>
+    </div>
+    @else
+    <div class="titulo_topo">
+        <h5>{{ $subcategory->title }}</h5>
+    </div>
+    @endif --}}
 
 </body>
 

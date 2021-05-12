@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CheckIfBrandCodeUpdate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBrand extends FormRequest
 {
@@ -29,7 +31,7 @@ class UpdateBrand extends FormRequest
     public function rules()
     {
         return [
-            // 'code' => ['required'],
+            'code' => ['required', new CheckIfBrandCodeUpdate($this->brand)],
             'title' => ['required', 'min:3', 'max:30'],
         ];
     }

@@ -76,7 +76,7 @@ return array(
         /**
          * Whether to enable font subsetting or not.
          */
-        "enable_font_subsetting" => false,
+        "enable_font_subsetting" => true, // false
 
         /**
          * The PDF rendering backend to use
@@ -184,7 +184,7 @@ return array(
          *
          * @var int
          */
-        "dpi" => 50, // era 96
+        "dpi" => 96, // era 96
 
         /**
          * Enable inline PHP
@@ -208,7 +208,7 @@ return array(
          *
          * @var bool
          */
-        "enable_javascript" => false,
+        "enable_javascript" => false, // era true
 
         /**
          * Enable remote file access
@@ -227,7 +227,7 @@ return array(
          *
          * @var bool
          */
-        "enable_remote" => true,
+        "enable_remote" => false, // era true
 
         /**
          * A ratio applied to the fonts height to be more like browsers' line height
