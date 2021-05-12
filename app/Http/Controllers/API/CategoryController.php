@@ -11,6 +11,7 @@ use App\Http\Resources\Category as CategoryResource;
 use App\Http\Resources\CategoryWithSubCategories;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends BaseController
 {

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class Category extends Model
 {
@@ -68,10 +69,6 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent', 'id');
     }
-    // public function subcategories()
-    // {
-    //     return Category::where('id', $this->id)->whereNotNull('parent');
-    // }
 
     // método de callback para exclusão em cascata
     public static function boot()
@@ -79,15 +76,19 @@ class Category extends Model
         parent::boot();
 
         self::deleting(function (Category $category) {
+            // remover se for categoria...
             if ($category->parent == null) {
-                // remove produtos
-                $category->products()->delete();
-
                 // remove subcategorias
-                $category->parent()->delete();
-            } else {
+                foreach ($category->subcategories()->get() as $subcategory) {
+                    $subcategory->delete();
+                }
+            } else { // remover se for subcategoria...
                 // remove produtos
-                $category->products()->delete();
+                foreach ($category->products()->get() as $product) {
+                    $product->delete();
+                    // remove cover
+                    File::delete(storage_path('app/public' . $product->cover));
+                }
             }
         });
     }
