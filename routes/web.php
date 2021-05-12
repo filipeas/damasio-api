@@ -56,8 +56,12 @@ Route::group(['prefix' => 'usuario', 'middleware' => ['check_session', 'check_us
     Route::delete('marca/excluir/{brand}/do', 'WEB\BrandController@destroy')->name('user.brand.destroy');
 
     // ROTA DA TELA DE MANIPULAÇÃO DOS PRODUTOS
+    Route::get('produto/{product}/categoria/{category}/visualizar', 'WEB\ProductController@show')->name('user.product.show');
     Route::get('produto/{subcategory}/{category}/cadastrar', 'WEB\ProductController@create')->name('user.product.create');
-    Route::post('produto/cadastrar/do', 'WEB\ProductController@store')->name('user.product.store');
+    Route::post('produto/{subcategory}/cadastrar/do', 'WEB\ProductController@store')->name('user.product.store');
+    Route::get('produto/{product}/categoria/{category}/subcategoria/{subcategory}/editar', 'WEB\ProductController@edit')->name('user.product.edit');
+    Route::post('produto/{product}/{subcategory}/editar/do', 'WEB\ProductController@update')->name('user.product.update');
+    Route::delete('produto/{product}/{subcategory}/excluir/do', 'WEB\ProductController@destroy')->name('user.product.destroy');
 
     // ROTA DA TELA DE IMPORTAÇÃO DE PLANILHA XML
     Route::get('importar/xml', 'WEB\SpreadsheetImportController@home')->name('user.import.xml');

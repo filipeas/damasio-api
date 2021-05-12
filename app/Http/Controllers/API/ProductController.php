@@ -83,7 +83,7 @@ class ProductController extends BaseController
         $product = new Product();
         $product->cod = $request->cod;
         $product->subcategory = $request->subcategory;
-        $product->group = $request->group;
+        // $product->group = $request->group;
         $product->description = $request->description;
         $product->application = $request->application;
         $product->save();
@@ -121,7 +121,7 @@ class ProductController extends BaseController
 
         $image = $request->file('cover');
         $name = Str::slug('produto-' . time());
-        $folder = '/uploads/imagens/';
+        $folder = '/produtos/';
         $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
         $this->uploadOne($image, $folder, 'public', $name);
         $product->cover = $filePath;

@@ -31,7 +31,7 @@ class UpdateProduct extends FormRequest
         return [
             'cod' => ['required'],
             'subcategory' => ['required', 'exists:categories,id'],
-            'group' => ['required', 'exists:groups,id'],
+            // 'group' => ['required', 'exists:groups,id'],
             'description' => ['required'],
             'application' => ['required'],
         ];

@@ -36,12 +36,15 @@
                                     <p>Descrição: <b>{{ $product->description }}</b></p>
                                 </div>
                                 <div class="col-md-4">
-                                    <a class="btn btn-primary w-100 mt-1 mb-1" href="{{-- route('user.subcategory.show', ['subcategory' => $subcategory->id]) --}}"><i
+                                    <a class="btn btn-primary w-100 mt-1 mb-1"
+                                        href="{{ route('user.product.show', ['product' => $product->id, 'category' => $subcategory->category->id]) }}"><i
                                             class="far fa-eye"></i></a>
-                                    <a class="btn btn-primary w-100 mt-1 mb-1" href="{{-- route('user.category.edit', ['category' => $category->id]) --}}"><i
+                                    <a class="btn btn-primary w-100 mt-1 mb-1"
+                                        href="{{ route('user.product.edit', ['product' => $product->id, 'subcategory' => $subcategory->id, 'category' => $subcategory->category->id]) }}"><i
                                             class="fas fa-external-link-alt"></i></a>
-                                    <form onsubmit="return confirm('Tem certeza que deseja excluir essa subcategoria?');"
-                                        action="{{-- route('user.subcategory.destroy', ['subcategory' => $subcategory->id, 'category' => $category->id]) --}}" method="POST">
+                                    <form onsubmit="return confirm('Tem certeza que deseja excluir esse produto?');"
+                                        action="{{ route('user.product.destroy', ['product' => $product->id, 'subcategory' => $subcategory->id]) }}"
+                                        method="POST">
                                         @csrf
                                         @method('delete')
                                         <button class="btn btn-danger w-100 mt-1 mb-1 deleteCategory">

@@ -31,7 +31,7 @@ class StoreProduct extends FormRequest
         return [
             'cod' => ['required'],
             'subcategory' => ['required', 'exists:categories,id'],
-            'group' => ['required', 'exists:groups,id'],
+            // 'group' => ['required', 'exists:groups,id'],
             'brands' => ['required', 'array', 'min:1'],
             'brands.*' => ['required', 'exists:brands,id'],
             'description' => ['required'],

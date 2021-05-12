@@ -51,7 +51,7 @@
                 <div class="card-header text-center">Importar nova planilha de produtos</div>
                 <div class="card-body">
                     <h5 class="card-title"><a href="{{ route('user.import.xml') }}"
-                            class="btn btn-outline-dark w-100">Importar</a></h5>
+                            class="btn btn-outline-dark w-100">Importar XML</a></h5>
                     <p class="card-text text-center">Há novos produtos a serem inseridos no sistema pela planilha? Vamos
                         atualizar todos os dados.</p>
                 </div>
