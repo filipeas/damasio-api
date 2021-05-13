@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->timestamps();
 
             $table->foreign('subcategory')->references('id')->on('categories')->onDelete('CASCADE');
-            $table->foreign('group')->references('id')->on('groups')->onDelete('CASCADE');
+            // $table->foreign('group')->references('id')->on('groups')->onDelete('CASCADE');
         });
     }
 

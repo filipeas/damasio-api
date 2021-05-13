@@ -119,62 +119,64 @@ class HomepageController extends Controller
         }
     }
 
-    /**
-     * Método responsável por gerar o PDF na tela do navegador
-     */
-    public function showCatalog()
-    {
-        // $categories = Category::all();
-        // return view('v2.index', compact('categories'));
 
-        // retornando categorias
-        $categories = Category::whereNull('parent')->orderBy('title', 'ASC')->get();
+    // REMOVER
+    // /**
+    //  * Método responsável por gerar o PDF na tela do navegador
+    //  */
+    // public function showCatalog()
+    // {
+    //     // $categories = Category::all();
+    //     // return view('v2.index', compact('categories'));
 
-        // caso queira testar para uma categoria, aponte no vetor qual a posição.
-        // por exemplo, caso queira printar somenta a primeira categoria, insira
-        // no 'categories' o vetor $categories[0].
+    //     // retornando categorias
+    //     $categories = Category::whereNull('parent')->orderBy('title', 'ASC')->get();
 
-        // trecho responsável por montar pagina de sumario
-        $pagina = 11; // considerando que o catalogo comeca na pagina 10
-        $arr_pages = [];
-        foreach ($categories[0]->subcategories()->orderBy('title', 'ASC')->get() as $subcategory) {
-            // echo "{$subcategory->title} - {$pagina}";
-            if ($pagina == 10) {
-                array_push($arr_pages, [$subcategory->title => $pagina]);
-                $pagina += (int)($subcategory->products()->count() / 9) + 1;
-                continue;
-            }
-            array_push($arr_pages, [$subcategory->title => $pagina]);
-            $pagina += (int)($subcategory->products()->count() / 9) + 1;
-            // echo "<br>";
-        }
-        $sumario = PDF::loadView('sumario', ['category' => $categories[0], 'pages' => $arr_pages]);
-        // return $sumario->stream('sumario.pdf');
-        // dd($arr_pages);
+    //     // caso queira testar para uma categoria, aponte no vetor qual a posição.
+    //     // por exemplo, caso queira printar somenta a primeira categoria, insira
+    //     // no 'categories' o vetor $categories[0].
 
-        $pdf = PDF::loadView('index', ['categories' => $categories[0], 'page' => 10]);
+    //     // trecho responsável por montar pagina de sumario
+    //     $pagina = 11; // considerando que o catalogo comeca na pagina 10
+    //     $arr_pages = [];
+    //     foreach ($categories[0]->subcategories()->orderBy('title', 'ASC')->get() as $subcategory) {
+    //         // echo "{$subcategory->title} - {$pagina}";
+    //         if ($pagina == 10) {
+    //             array_push($arr_pages, [$subcategory->title => $pagina]);
+    //             $pagina += (int)($subcategory->products()->count() / 9) + 1;
+    //             continue;
+    //         }
+    //         array_push($arr_pages, [$subcategory->title => $pagina]);
+    //         $pagina += (int)($subcategory->products()->count() / 9) + 1;
+    //         // echo "<br>";
+    //     }
+    //     $sumario = PDF::loadView('sumario', ['category' => $categories[0], 'pages' => $arr_pages]);
+    //     // return $sumario->stream('sumario.pdf');
+    //     // dd($arr_pages);
 
-        $path = public_path('storage/pdfs');
-        $path_tmp = public_path('storage/tmp');
-        $path_fixed_pages = public_path('storage/fixed pages');
+    //     $pdf = PDF::loadView('index', ['categories' => $categories[0], 'page' => 10]);
 
-        $fileName =  $categories[0]->title . '.' . 'pdf';
+    //     $path = public_path('storage/pdfs');
+    //     $path_tmp = public_path('storage/tmp');
+    //     $path_fixed_pages = public_path('storage/fixed pages');
 
-        $pdf->save($path . '/' . $fileName);
-        $sumario->save($path_tmp . '/' . $fileName);
+    //     $fileName =  $categories[0]->title . '.' . 'pdf';
 
-        $pdfMerger = PDFMerger::init();
+    //     $pdf->save($path . '/' . $fileName);
+    //     $sumario->save($path_tmp . '/' . $fileName);
 
-        $pdfMerger->addPDF($path_fixed_pages . '/paginas-fixas.pdf', 'all');
-        $pdfMerger->addPDF($path_tmp . '/' . $fileName, 'all');
-        $pdfMerger->addPDF($path . '/' . $fileName, 'all');
+    //     $pdfMerger = PDFMerger::init();
 
-        $pdfMerger->merge();
-        $pdfMerger->save(public_path('storage/pdfs/' .  $fileName), "file");
-        dd('processo finalizado com sucesso.');
+    //     $pdfMerger->addPDF($path_fixed_pages . '/paginas-fixas.pdf', 'all');
+    //     $pdfMerger->addPDF($path_tmp . '/' . $fileName, 'all');
+    //     $pdfMerger->addPDF($path . '/' . $fileName, 'all');
+
+    //     $pdfMerger->merge();
+    //     $pdfMerger->save(public_path('storage/pdfs/' .  $fileName), "file");
+    //     dd('processo finalizado com sucesso.');
 
 
-        $pdf = PDF::loadView('index', ['categories' => $categories[0], 'page' => 0]);
-        return $pdf->stream('catalogo.pdf');
-    }
+    //     $pdf = PDF::loadView('index', ['categories' => $categories[0], 'page' => 0]);
+    //     return $pdf->stream('catalogo.pdf');
+    // }
 }

@@ -6,5 +6,6 @@
     "/site/jquery-form.js": "/site/jquery-form.js",
     "/site/bootstrap.js": "/site/bootstrap.js",
     "/site/fontawesome.js": "/site/fontawesome.js",
-    "/site/jquery-mask.js": "/site/jquery-mask.js"
+    "/site/jquery-mask.js": "/site/jquery-mask.js",
+    "/site/script.js": "/site/script.js"
 }

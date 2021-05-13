@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Category;
-use App\Product;
+use App\User;
 use Illuminate\Filesystem\Filesystem;
 use Barryvdh\DomPDF\Facade as PDF;
 use LynX39\LaraPdfMerger\Facades\PdfMerger;
@@ -17,14 +17,15 @@ class GeneratePDF implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $pdf_fixo;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($pdf_fixo)
     {
-        //
+        $this->pdf_fixo = $pdf_fixo;
     }
 
     /**
@@ -35,8 +36,9 @@ class GeneratePDF implements ShouldQueue
     public function handle()
     {
         /**
-         * Método responsável por gerar PDF's a partir do banco de dados.
+         * Método responsável por gerar PDF's das categorias a partir do banco de dados.
          * Esse método exclui todos os PDF's já gerados e os recria.
+         * Também exclui os PDF's de sumários temporários no final do processo.
          */
 
         // retornando categorias na ordem algabetica
@@ -44,7 +46,7 @@ class GeneratePDF implements ShouldQueue
 
         // antes de enviar ao job, deve ser verificado se há categorias para ser processado
         if ($categories->isEmpty()) {
-            return response()->json('Não há categorias para processar', 404);
+            return response()->json('Não há categorias para processar', 200);
         }
 
         // removendo apontamento dos PDF's de cada categoria
@@ -57,53 +59,54 @@ class GeneratePDF implements ShouldQueue
         $file = new Filesystem;
         $file->cleanDirectory(public_path('storage/pdfs'));
 
-        // array de PDF's gerados. E usado para fazer merge de todos os PDF's gerados no final
-        $pdfs = [];
-        // controle do número da página corrente
-        $pagina = 0;
+        // nº de páginas do PDF fixo
+        $numPagesPDFFix = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $this->pdf_fixo))), $dummy) + 2;
 
         foreach ($categories as $category) {
             gc_disable();
 
+            // criando sumário da categoria para depois anexar
+            $arr_pages = [];
+            $pagina = $numPagesPDFFix;
+            foreach ($category->subcategories()->orderBy('title', 'ASC')->get() as $subcategory) {
+                if ($pagina == ($pagina - 1)) {
+                    array_push($arr_pages, [$subcategory->title => $pagina]);
+                    $pagina += (int)($subcategory->products()->count() / ($pagina - 2)) + 1;
+                    continue;
+                }
+                array_push($arr_pages, [$subcategory->title => $pagina]);
+                $pagina += (int)($subcategory->products()->count() / 9) + 1;
+            }
+
+            // gerando pdf do sumario da categoria
+            $sumario = PDF::loadView('sumario', ['category' => $category, 'pages' => $arr_pages]);
+            // gerando pdf da categoria com paginação
             $pdf = PDF::loadView('index', ['categories' => $category, 'page' => $pagina]);
 
-            $path = public_path('storage/pdfs');
-            $path_fixed_pages = public_path('storage/fixed pages');
+            $path = public_path('storage/pdfs'); // diretorio que guardará o pdf da categoria
+            $path_tmp = public_path('storage/tmp'); // diretorio que guardará o pdf do sumario (temporario)
             $fileName =  $category->title . '.' . 'pdf';
 
             $pdf->save($path . '/' . $fileName);
-            // array_push($pdfs, $path . '/' . $fileName);
+            $sumario->save($path_tmp . '/' . $fileName);
 
             // colocando paginas fixas no inicio no PDF gerado
             $pdfMerger = PDFMerger::init();
-
-            $pdfMerger->addPDF($path_fixed_pages . '/paginas-fixas.pdf', 'all');
-            $pdfMerger->addPDF($path . '/' . $fileName, 'all');
-
+            $pdfMerger->addPDF(public_path('storage' . $this->pdf_fixo), 'all'); // anexa as paginas fixas
+            $pdfMerger->addPDF($path_tmp . '/' . $fileName, 'all'); // anexa o sumario da categoria
+            $pdfMerger->addPDF($path . '/' . $fileName, 'all'); // anexa as paginas da categoria
             $pdfMerger->merge();
             $pdfMerger->save(public_path('storage/pdfs/' .  $fileName), "file");
-
-            // ajustando contagem de páginas para inserir a pagina atual correta no proximo loop
-            $countProducts = Product::where('subcategory', $category->id)->count();
-            for ($i = $countProducts; $i > 0; $i = $i - 9) {
-                $pagina += 1;
-            }
 
             gc_enable();
             gc_collect_cycles();
 
-            // salvar caminho do PDF na categoria
+            // salvar caminho do PDF na categoria do banco de dados
             $category->pdf = "pdfs/{$fileName}";
             $category->save();
+
+            // limpando diretório dos sumários
+            $file->cleanDirectory(public_path('storage/tmp'));
         }
-
-        // $pdfMerger = PDFMerger::init();
-
-        // foreach ($pdfs as $newpdf) {
-        //     $pdfMerger->addPDF($newpdf, 'all');
-        // }
-
-        // $pdfMerger->merge();
-        // $pdfMerger->save(public_path('storage/pdfs/catalogo_completo.pdf'), "file");
     }
 }

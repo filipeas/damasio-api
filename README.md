@@ -51,3 +51,6 @@ Deve manipulados as seguintes variáveis de ambiente do arquivo php.ini:
 
 ## Como executar testes
 ``` .\vendor\bin\phpunit .\tests\Feature\ ```
+
+## Como executar a inserção dos seeds do sistema
+``` php artisan db:seed ```

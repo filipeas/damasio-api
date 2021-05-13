@@ -35,7 +35,7 @@ class Category extends Model
                 'products.id as id',
                 'products.cod as cod',
                 'products.subcategory as subcategory',
-                'products.group as group',
+                // 'products.group as group',
                 'products.description as description',
                 'products.application as application',
                 'products.cover as cover'
@@ -51,7 +51,7 @@ class Category extends Model
                 'products.id as id',
                 'products.cod as cod',
                 'products.subcategory as subcategory',
-                'products.group as group',
+                // 'products.group as group',
                 'products.description as description',
                 'products.application as application',
                 'products.cover as cover'

@@ -29,6 +29,11 @@ Route::get('logout', 'WEB\LoginController@logout')->name('logout');
 Route::group(['prefix' => 'usuario', 'middleware' => ['check_session', 'check_user']], function () {
     // ROTA DA TELA INICIAL
     Route::get('home', 'WEB\UserController@home')->name('user.home');
+
+    // ROTA DE CONFIGURAÇÕES
+    Route::get('configuracoes', 'WEB\UserController@config')->name('user.config');
+    Route::post('configurar/do', 'WEB\UserController@executeConfig')->name('user.config.do');
+
     // ROTA DA TELA DE MANIPULAÇÃO DOS DADOS DA CATEGORIAS
     Route::get('categoria', 'WEB\CategoryController@index')->name('user.category.index');
     Route::get('categoria/{category}/visualizar', 'WEB\CategoryController@show')->name('user.category.show');
@@ -64,7 +69,11 @@ Route::group(['prefix' => 'usuario', 'middleware' => ['check_session', 'check_us
     Route::delete('produto/{product}/{subcategory}/excluir/do', 'WEB\ProductController@destroy')->name('user.product.destroy');
 
     // ROTA DA TELA DE IMPORTAÇÃO DE PLANILHA XML
-    Route::get('importar/xml', 'WEB\SpreadsheetImportController@home')->name('user.import.xml');
+    Route::get('importar/xml', 'WEB\SpreadsheetImportController@index')->name('user.import.xml');
+    Route::post('importar/xml/do', 'WEB\SpreadsheetImportController@store')->name('user.import.xml.do');
+
     // ROTA DA TELA DE GERAÇÃO DOS PDF's
-    Route::get('gerar/pdf', 'WEB\SpreadsheetImportController@home')->name('user.generate.pdf');
+    Route::get('gerar/pdf', 'WEB\SpreadsheetImportController@indexGeneratePDF')->name('user.generate.pdf');
+    Route::get('acompanhar/progresso/pdf', 'WEB\SpreadsheetImportController@progressGenerate')->name('user.progress.generate.pdf');
+    Route::get('gerar/pdf/do', 'WEB\SpreadsheetImportController@storeGeneratePDF')->name('user.generate.pdf.do');
 });

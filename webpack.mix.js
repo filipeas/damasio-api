@@ -20,4 +20,5 @@ mix
     .scripts('node_modules/jquery-form/dist/jquery.form.min.js', 'public/site/jquery-form.js')
     .scripts('node_modules/bootstrap/dist/js/bootstrap.bundle.js', 'public/site/bootstrap.js')
     .scripts('node_modules/@fortawesome/fontawesome-free/js/all.js', 'public/site/fontawesome.js')
-    .scripts('node_modules/jquery-mask-plugin/dist/jquery.mask.min.js', 'public/site/jquery-mask.js');
+    .scripts('node_modules/jquery-mask-plugin/dist/jquery.mask.min.js', 'public/site/jquery-mask.js')
+    .scripts('resources/views/js/script.js', 'public/site/script.js');

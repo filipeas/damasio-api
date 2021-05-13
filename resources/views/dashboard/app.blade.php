@@ -46,6 +46,7 @@
                             <i class="far fa-2x fa-user-circle"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{{ route('user.config') }}">Configurações</a>
                             <a class="dropdown-item" href="{{ route('logout') }}">Sair</a>
                         </div>
                     </div>
@@ -71,11 +72,7 @@
     <script src="{{ asset('site/bootstrap.js') }}"></script>
     <script src="{{ asset('site/fontawesome.js') }}"></script>
     <script src="{{ asset('site/jquery-mask.js') }}"></script>
-    {{-- <script src="{{ asset('site/jspdf.umd.min.js') }}"></script>
-    <script src="{{ asset('site/jspdf.plugin.autotable.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('site/store/site.js') }}"></script> --}}
-    {{-- <script src="{{ asset('site/chartjs.js') }}"></script> --}}
-    {{-- <script src="{{ asset('site/filter.js') }}"></script> --}}
+    <script src="{{ asset('site/script.js') }}"></script>
 </body>
 
 </html>
