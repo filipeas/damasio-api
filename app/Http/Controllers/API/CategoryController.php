@@ -9,6 +9,8 @@ use App\Http\Requests\StorePDFForACategory;
 use App\Http\Requests\UpdateCategory;
 use App\Http\Resources\Category as CategoryResource;
 use App\Http\Resources\CategoryWithSubCategories;
+use App\Http\Resources\User as ResourcesUser;
+use App\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -37,6 +39,7 @@ class CategoryController extends BaseController
     {
         return $this->sendResponse(
             [
+                'user' => new ResourcesUser(User::where('id', 1)->first()),
                 'categories' => CategoryResource::collection(Category::whereNull('parent')->orderBy('title', 'ASC')->get()),
             ],
             'Categorias encontradas con sucesso',

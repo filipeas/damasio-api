@@ -11,6 +11,8 @@ use App\Http\Requests\XMLFileImport;
 use App\Product;
 use Exception;
 use App\Jobs\GeneratePDF as JobsGeneratePDF;
+use App\Jobs\GenerateFinalPDF as GenerateFinalPDF;
+use App\User;
 
 class SpreadsheetImport extends BaseController
 {
@@ -24,6 +26,11 @@ class SpreadsheetImport extends BaseController
      */
     public function XMLFileImport(XMLFileImport $request)
     {
+        $user = User::where('id', auth()->user()->id)->first();
+
+        if (is_null($user->pdf_fixo))
+            return $this->sendError("Você precisa inserir primeiro o arquivo de páginas fixas para montar os PDF's.");
+
         // extraindo linhas da planilha e limpando os campos
         $documento = $this->processXML($request->xml);
 
@@ -53,7 +60,8 @@ class SpreadsheetImport extends BaseController
         Product::whereNotNull('id')->delete();
         Brand::whereNotNull('id')->delete();
         Group::whereNotNull('id')->delete();
-        Category::whereNotNull('id')->delete();
+        Category::whereNotNull('parent')->delete(); // remover subcategorias
+        Category::whereNull('parent')->delete(); // remover categorias
 
         // inserindo marcas
         $marcasModel = [];
@@ -113,7 +121,10 @@ class SpreadsheetImport extends BaseController
         }
 
         // realizando chamada de job para executar a criação dos PDF's e enviar a fila de processos
-        JobsGeneratePDF::dispatch();
+        JobsGeneratePDF::dispatch($user->pdf_fixo);
+
+        // realizando chamada de job para executar a criação do PDF final e enviar a fila de processos
+        GenerateFinalPDF::dispatch($user);
 
         return $this->sendResponse([], "Atualização do banco de dados realizada com sucesso. Gerando PDF's");
     }

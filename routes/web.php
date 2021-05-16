@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('catalogo', 'WEB\HomepageController@showCatalog');
+Route::get('catalogo', 'WEB\HomepageController@showCatalog'); // rota de teste. apagar depois...
 
 Route::get('/', 'WEB\HomepageController@home')->name('site.home');
 Route::get('/categoria/{category}/visualizar', 'WEB\HomepageController@showCategory')->name('site.category');

@@ -8,10 +8,17 @@
             <p class="lead text-muted">Bem-vindo ao catálogo digital da Damásio Motopeças. <br>Aqui você pode
                 visualizar rapidamente todos os nossos produtos disponíveis no catálogo.</p>
             <p>
-                <a href="#" class="btn btn-primary my-2">Baixar catálogo completo</a>
+                <a href="{{ $catalog }}"
+                    class="btn btn-primary my-2 {{ $catalog == null ? 'disabled' : '' }}">Baixar catálogo completo</a>
             </p>
         </div>
     </section>
+
+    @if ($error)
+        <div class="alert alert-warning text-center" role="alert">
+            {{ $message }} <br>
+        </div>
+    @endif
 
     <div class="album py-5 bg-light">
         <div class="container">
@@ -28,8 +35,8 @@
                                     <div class="btn-group w-100">
                                         <a href="{{ route('site.category', ['category' => $category->id]) }}"
                                             type="button" class="btn btn-sm btn-outline-secondary">Visualizar</a>
-                                            <a href="{{ $category->pdf }}" download type="button"
-                                                class="btn btn-sm btn-outline-primary">Baixar</a>
+                                        <a href="{{ $category->pdf }}" download type="button"
+                                            class="btn btn-sm btn-outline-primary {{ $category->pdf == null ? 'disabled' : '' }}">Baixar</a>
                                     </div>
                                 </div>
                             </div>

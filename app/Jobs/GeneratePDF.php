@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Category;
-use App\User;
 use Illuminate\Filesystem\Filesystem;
 use Barryvdh\DomPDF\Facade as PDF;
 use LynX39\LaraPdfMerger\Facades\PdfMerger;
@@ -59,11 +58,18 @@ class GeneratePDF implements ShouldQueue
         $file = new Filesystem;
         $file->cleanDirectory(public_path('storage/pdfs'));
 
+        // caminhos fixos
+        $path = public_path('storage/pdfs'); // diretorio que guardará o pdf da categoria
+        $path_tmp = public_path('storage/tmp'); // diretorio que guardará o pdf do sumario (temporario)
+
         // nº de páginas do PDF fixo
         $numPagesPDFFix = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $this->pdf_fixo))), $dummy) + 2;
 
         foreach ($categories as $category) {
             gc_disable();
+
+            // nome do arquivo pdf que será gerado
+            $fileName =  $category->title . '.' . 'pdf';
 
             // criando sumário da categoria para depois anexar
             $arr_pages = [];
@@ -80,15 +86,15 @@ class GeneratePDF implements ShouldQueue
 
             // gerando pdf do sumario da categoria
             $sumario = PDF::loadView('sumario', ['category' => $category, 'pages' => $arr_pages]);
+            $sumario->save($path_tmp . '/' . $fileName); // salvando pdf do sumario gerado
+
+            // nº de páginas do sumário
+            $numPagesSumary = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path_tmp . '/' . $fileName)), $dummy);
+
             // gerando pdf da categoria com paginação
-            $pdf = PDF::loadView('index', ['categories' => $category, 'page' => $pagina]);
+            $pdf = PDF::loadView('index', ['categories' => $category, 'page' => (($numPagesPDFFix - 2) + $numPagesSumary)]);
 
-            $path = public_path('storage/pdfs'); // diretorio que guardará o pdf da categoria
-            $path_tmp = public_path('storage/tmp'); // diretorio que guardará o pdf do sumario (temporario)
-            $fileName =  $category->title . '.' . 'pdf';
-
-            $pdf->save($path . '/' . $fileName);
-            $sumario->save($path_tmp . '/' . $fileName);
+            $pdf->save($path . '/' . $fileName); // salvando pdf do catalogo
 
             // colocando paginas fixas no inicio no PDF gerado
             $pdfMerger = PDFMerger::init();

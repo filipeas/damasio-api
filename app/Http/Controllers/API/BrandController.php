@@ -36,7 +36,7 @@ class BrandController extends BaseController
     {
         return $this->sendResponse(
             [
-                'brands' => BrandResource::collection(Brand::all()),
+                'brands' => BrandResource::collection(Brand::orderBy('title', 'ASC')->get()),
             ],
             'Marcas encontradas con sucesso',
         );
