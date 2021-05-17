@@ -40,10 +40,10 @@ dos PDF's das categorias. Para isso, em ambiente linux, execute o comando abaixo
 Para configurações mais detalhadas, [acesse o link.](https://laravel.com/docs/8.x/queues#supervisor-configuration) na sessão 'Configurando o Supervisor'.
 
 ## Configurações do php
-Deve manipulados as seguintes variáveis de ambiente do arquivo php.ini:
+Deve ser manipulados as seguintes variáveis de ambiente do arquivo php.ini:
 ``` post_max_size = 40M ```
 ``` upload_max_filesize = 10M ```
-``` memory_limit = 1024M ```
+``` memory_limit = 4096M ```
 
 * OBS1: Em caso de atualização em massa das imagens dos produtos ou das marcas, seguindo novos produtos inseridos através da planilha, as atualizações devem ser feitas diretamente do diretório 'storage/app/public/'. Aqui está armazenado os dois diretórios 'marcas/' que armazena todas as imagens das marcas e 'produtos/' que armazena todas as imagens dos produtos.
 
@@ -54,3 +54,7 @@ Deve manipulados as seguintes variáveis de ambiente do arquivo php.ini:
 
 ## Como executar a inserção dos seeds do sistema
 ``` php artisan db:seed ```
+
+## Como executar queue jobs do projeto
+Deve ser adicionado esse comando do supervisor
+``` php artisan queue:listen --timeout=0 ```

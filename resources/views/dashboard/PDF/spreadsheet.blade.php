@@ -21,7 +21,7 @@
     @endif
 
     <form onsubmit="return confirm('Tem certeza que deseja atualizar todos os produtos com esse novo arquivo XML?');"
-    action="{{ route('user.import.xml.do') }}" name="formCreateSpreadsheet" method="POST"
+        action="{{ route('user.import.xml.do') }}" name="formCreateSpreadsheet" method="POST"
         class="bg-gray-apple shadow-sm p-3 mb-5 rounded" enctype="multipart/form-data">
 
         @csrf
@@ -36,7 +36,8 @@
         </div>
 
         <hr>
-        <p class="text-center">* Após confirmar a importação, o sistema irá carregar o arquivo XML e executar os processos de organização de
+        <p class="text-center">* Após confirmar a importação, o sistema irá carregar o arquivo XML e executar os processos
+            de organização de
             dados. Por isso, atente-se a enviar o arquivo no formato correto.</p>
         <input type="submit" class="btn btn-primary w-100" value="Importar planilha">
     </form>
