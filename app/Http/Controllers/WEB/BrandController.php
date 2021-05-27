@@ -15,9 +15,12 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
+        $page = 1;
+        if ($request->has('page'))
+            $page = $request->page;
         try {
             $client = new \GuzzleHttp\Client();
-            $response = $client->get(env('API_URL') . "/api/user/brand", [
+            $response = $client->get(env('API_URL') . "/api/user/brand?page={$page}", [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $request->session()->get('token'),
@@ -29,6 +32,7 @@ class BrandController extends Controller
             return view('dashboard.brand.index', [
                 'error' => false,
                 'brands' => $data->data->brands,
+                'pagination' => $data->data->pagination,
             ]);
         } catch (ClientException $e) {
             if ($e->getResponse()->getStatusCode() == 401) {

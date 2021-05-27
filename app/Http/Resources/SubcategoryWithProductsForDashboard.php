@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubcategoryWithProducts extends JsonResource
+class SubcategoryWithProductsForDashboard extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,7 @@ class SubcategoryWithProducts extends JsonResource
     public function toArray($request)
     {
         $products = $this->resource->productsOfSubcategory()->paginate(15);
-        $products->setPath(env('APP_URL') . "/subcategoria/{$this->resource->id}/visualizar");
+        $products->setPath(env('APP_URL') . "/usuario/subcategoria/{$this->resource->id}/visualizar");
         return [
             'id' => $this->resource->id,
             'category' => new CategoryWithSubCategories($this->resource->parent()->first()),

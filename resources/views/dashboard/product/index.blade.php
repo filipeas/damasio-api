@@ -33,7 +33,7 @@
                                 <div class="col-md-8 text-center">
                                     <img src="{{ $product->cover }}" alt="{{ $product->description }}"
                                         title="{{ $product->description }}" class="w-50">
-                                    <p>Descrição: <b>{{ $product->description }}</b></p>
+                                    <p>Descrição: <b>{{ Str::limit($product->description, 20) }}</b></p>
                                 </div>
                                 <div class="col-md-4">
                                     <a class="btn btn-primary w-100 mt-1 mb-1"
@@ -56,6 +56,12 @@
                         </div>
                     </div>
                 @endforeach
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {!! $subcategory->pagination->links !!}
+                    </div>
+                </div>
             </div>
             <hr>
         </div>

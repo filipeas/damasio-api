@@ -49,6 +49,12 @@
                         </div>
                     </div>
                 @endforeach
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {!! $pagination->links !!}
+                    </div>
+                </div>
             </div>
             <hr>
         </div>

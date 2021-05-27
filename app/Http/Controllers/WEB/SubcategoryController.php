@@ -51,9 +51,12 @@ class SubcategoryController extends Controller
      */
     public function show(Request $request, int $subcategory)
     {
+        $page = 1;
+        if ($request->has('page'))
+            $page = $request->page;
         try {
             $client = new \GuzzleHttp\Client();
-            $response = $client->get(env('API_URL') . "/api/user/subcategory/{$subcategory}", [
+            $response = $client->get(env('API_URL') . "/api/user/subcategory/{$subcategory}?page={$page}", [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $request->session()->get('token'),

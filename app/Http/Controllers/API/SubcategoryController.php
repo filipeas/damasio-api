@@ -8,6 +8,7 @@ use App\Http\Requests\StoreSubcategory;
 use App\Http\Requests\UpdateSubcategory;
 use App\Http\Resources\Subcategory as SubCategoryResource;
 use App\Http\Resources\SubcategoryWithProducts;
+use App\Http\Resources\SubcategoryWithProductsForDashboard;
 use Illuminate\Support\Facades\DB;
 
 class SubcategoryController extends BaseController
@@ -58,7 +59,7 @@ class SubcategoryController extends BaseController
 
         return $this->sendResponse(
             [
-                'subcategory' => new SubcategoryWithProducts($subcategory),
+                'subcategory' => new SubcategoryWithProductsForDashboard($subcategory),
             ],
             'Subcategoria encontrada com sucesso'
         );

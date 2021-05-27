@@ -34,9 +34,20 @@ class BrandController extends BaseController
      */
     public function index()
     {
+        $brand = Brand::orderBy('title', 'ASC')->paginate(15);
+        $brand->setPath(env('APP_URL') . "/usuario/marca");
         return $this->sendResponse(
             [
-                'brands' => BrandResource::collection(Brand::orderBy('title', 'ASC')->get()),
+                'brands' => BrandResource::collection($brand),
+                'pagination' => [
+                    'links' => (string) $brand->links(),
+                    'current_page' => $brand->currentPage(),
+                    'last_page' => $brand->lastPage(),
+                    'last_page_url' => $brand->previousPageUrl(),
+                    'next_page_url' => $brand->nextPageUrl(),
+                    'per_page' => $brand->perPage(),
+                    'total' => $brand->total(),
+                ],
             ],
             'Marcas encontradas con sucesso',
         );

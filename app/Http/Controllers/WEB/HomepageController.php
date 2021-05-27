@@ -67,8 +67,11 @@ class HomepageController extends Controller
         }
     }
 
-    public function showSubcategory(int $subcategory, int $page)
+    public function showSubcategory(Request $request, int $subcategory)
     {
+        $page = 1;
+        if ($request->has('page'))
+            $page = $request->page;
         try {
             $client = new \GuzzleHttp\Client();
             $response = $client->get(env('API_URL') . "/api/subcategory/{$subcategory}/show?page={$page}", [

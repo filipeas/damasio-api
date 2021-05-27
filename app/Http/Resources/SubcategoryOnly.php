@@ -17,7 +17,7 @@ class SubcategoryOnly extends JsonResource
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
-            'cover' => (is_null($this->resource->productsOfSubcategory()->skip(1)->first()) ? null : asset('storage/' . $this->resource->productsOfSubcategory()->skip(1)->first()->cover)),
+            'cover' => (is_null($this->resource->productsOfSubcategory()->skip(1)->first()) ? asset('storage/' . $this->resource->productsOfSubcategory()->first()->cover) : asset('storage/' . $this->resource->productsOfSubcategory()->skip(1)->first()->cover)),
             'created_at' => $this->resource->created_at->format('d/m/Y'),
             'updated_at' => $this->resource->updated_at->format('d/m/Y'),
         ];

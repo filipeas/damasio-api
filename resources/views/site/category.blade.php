@@ -6,7 +6,8 @@
         <div class="container">
             <h1 class="jumbotron-heading">{{ $category->title }}</h1>
             <hr>
-            <p class="lead text-muted mb-0">Abaixo é possível visualizar todas as subcategorias da categoria <b>{{ $category->title }}</b>.
+            <p class="lead text-muted mb-0">Abaixo é possível visualizar todas as subcategorias da categoria
+                <b>{{ $category->title }}</b>.
             </p>
         </div>
     </section>
@@ -24,7 +25,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group w-100">
-                                        <a href="{{ route('site.subcategory', ['subcategory' => $subcategory->id, 'page' => 1]) }}"
+                                        <a href="{{ route('site.subcategory', ['subcategory' => $subcategory->id]) }}"
                                             type="button" class="btn btn-sm btn-outline-secondary">Visualizar</a>
                                     </div>
                                 </div>

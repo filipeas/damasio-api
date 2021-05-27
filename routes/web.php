@@ -17,7 +17,7 @@ Route::get('catalogo', 'WEB\HomepageController@showCatalog'); // rota de teste. 
 
 Route::get('/', 'WEB\HomepageController@home')->name('site.home');
 Route::get('/categoria/{category}/visualizar', 'WEB\HomepageController@showCategory')->name('site.category');
-Route::get('/subcategoria/{subcategory}/visualizar/{page}', 'WEB\HomepageController@showSubcategory')->name('site.subcategory');
+Route::get('/subcategoria/{subcategory}/visualizar', 'WEB\HomepageController@showSubcategory')->name('site.subcategory');
 Route::get('/produto/{product}/visualizar', 'WEB\HomepageController@showProduct')->name('site.product');
 
 // ROTA DE LOGIN
