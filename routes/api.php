@@ -8,7 +8,7 @@ Route::post('logout', 'API\AuthController@logout');
 // ROTAS PÚBLICAS
 Route::get('/show-all-categories', 'API\CategoryController@index');
 Route::get('/category/{category}/show', 'API\CategoryController@show');
-Route::get('/subcategory/{subcategory}/show', 'API\SubcategoryController@show');
+Route::get('/subcategory/{subcategory}/show', 'API\SubcategoryController@showPublic');
 Route::get('/product/{product}/show', 'API\ProductController@show');
 
 Route::group(['prefix' => 'user', 'middleware' => ['auth:api']], function () {

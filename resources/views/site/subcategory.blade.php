@@ -49,6 +49,22 @@
                     <div class="album">
                         <div class="container">
                             <div class="row">
+
+                                <div class="col-md-12 pb-3">
+                                    <form action="{{ route('site.subcategory', ['subcategory' => $subcategory->id]) }}" method="GET">
+                                        @csrf
+                                        <div class="row pt-3 pb-3">
+                                            <div class="col-md-8 pb-1">
+                                                <input required name="search" class="form-control form-control-lg" type="text"
+                                                    placeholder="Pesquisar por descrição ou aplicação">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-lg btn-outline-secondary w-100">Pesquisar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
                                 @foreach ($subcategory->products as $product)
                                     <div class="col-md-4">
                                         <div class="card mb-4 box-shadow">

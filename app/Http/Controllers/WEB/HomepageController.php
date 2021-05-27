@@ -72,9 +72,18 @@ class HomepageController extends Controller
         $page = 1;
         if ($request->has('page'))
             $page = $request->page;
+
+        $search = "";
+        if ($request->has('search')){
+            $search = $request->search;
+            $url = "/api/subcategory/{$subcategory}/show?search={$search}&page={$page}";
+        }else{
+            $url = "/api/subcategory/{$subcategory}/show?page={$page}";
+        }
+
         try {
             $client = new \GuzzleHttp\Client();
-            $response = $client->get(env('API_URL') . "/api/subcategory/{$subcategory}/show?page={$page}", [
+            $response = $client->get(env('API_URL') . $url, [
                 'headers' => [
                     'Accept' => 'application/json',
                 ]

@@ -26,6 +26,21 @@
                 produto</a>
 
             <div class="row">
+                <div class="col-md-12 pb-3">
+                    <form action="{{ route('user.subcategory.show', ['subcategory' => $subcategory->id]) }}" method="GET">
+                        @csrf
+                        <div class="row pt-3 pb-3">
+                            <div class="col-md-8 pb-1">
+                                <input required name="search" class="form-control form-control-lg" type="text"
+                                    placeholder="Pesquisar por descrição ou aplicação">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-lg btn-outline-secondary w-100">Pesquisar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
                 @foreach ($products as $product)
                     <div class="col-md-4">
                         <div class="shadow-sm mt-2 mb-2 p-3 mb-5 bg-gray-100 rounded">
@@ -57,9 +72,11 @@
                     </div>
                 @endforeach
 
-                <div class="row">
-                    <div class="col-md-12">
-                        {!! $subcategory->pagination->links !!}
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {!! $subcategory->pagination->links !!}
+                        </div>
                     </div>
                 </div>
             </div>

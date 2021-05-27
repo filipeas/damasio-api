@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Category;
+use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Requests\StoreSubcategory;
 use App\Http\Requests\UpdateSubcategory;
@@ -49,7 +50,7 @@ class SubcategoryController extends BaseController
      * 
      * GET METHOD
      */
-    public function show(int $subcategory)
+    public function show(Request $request, int $subcategory)
     {
         $subcategory = Category::where('id', $subcategory)->whereNotNull('parent')->first();
 
@@ -60,6 +61,27 @@ class SubcategoryController extends BaseController
         return $this->sendResponse(
             [
                 'subcategory' => new SubcategoryWithProductsForDashboard($subcategory),
+            ],
+            'Subcategoria encontrada com sucesso'
+        );
+    }
+
+    /**
+     * Método responsável por retornar uma sub-categoria especifica pelo id para o site.
+     * 
+     * GET METHOD
+     */
+    public function showPublic(Request $request, int $subcategory)
+    {
+        $subcategory = Category::where('id', $subcategory)->whereNotNull('parent')->first();
+
+        if (is_null($subcategory)) {
+            return $this->sendError('Subcategoria não encontrada');
+        }
+
+        return $this->sendResponse(
+            [
+                'subcategory' => new SubcategoryWithProducts($subcategory),
             ],
             'Subcategoria encontrada com sucesso'
         );

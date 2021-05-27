@@ -54,9 +54,18 @@ class SubcategoryController extends Controller
         $page = 1;
         if ($request->has('page'))
             $page = $request->page;
+
+        $search = "";
+        if ($request->has('search')) {
+            $search = $request->search;
+            $url = "/api/user/subcategory/{$subcategory}?search={$search}&page={$page}";
+        } else {
+            $url = "/api/user/subcategory/{$subcategory}?page={$page}";
+        }
+
         try {
             $client = new \GuzzleHttp\Client();
-            $response = $client->get(env('API_URL') . "/api/user/subcategory/{$subcategory}?page={$page}", [
+            $response = $client->get(env('API_URL') . $url, [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $request->session()->get('token'),

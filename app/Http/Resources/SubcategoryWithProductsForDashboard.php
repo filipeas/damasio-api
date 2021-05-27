@@ -14,8 +14,17 @@ class SubcategoryWithProductsForDashboard extends JsonResource
      */
     public function toArray($request)
     {
-        $products = $this->resource->productsOfSubcategory()->paginate(15);
-        $products->setPath(env('APP_URL') . "/usuario/subcategoria/{$this->resource->id}/visualizar");
+        if ($request->has('search')) {
+            $products = $this->resource->productsOfSubcategory()
+                ->where('products.description', 'like', '%' . $request->search . '%')
+                ->orWhere('products.application', 'LIKE', '%' . $request->search . '%')
+                ->paginate(15);
+            $products->setPath(env('APP_URL') . "/usuario/subcategoria/{$this->resource->id}/visualizar?search={$request->search}");
+        } else {
+            $products = $this->resource->productsOfSubcategory()->paginate(15);
+            $products->setPath(env('APP_URL') . "/usuario/subcategoria/{$this->resource->id}/visualizar");
+        }
+
         return [
             'id' => $this->resource->id,
             'category' => new CategoryWithSubCategories($this->resource->parent()->first()),
