@@ -56,6 +56,8 @@
                                         class="text-white">Siga-nos no YouTube</a></li>
                                 <li><a href="rh@rdamasio.com.br" class="text-white">Nos envie um E-mail</a></li>
                             </ul>
+                            <hr>
+                            <a href="{{route('login')}}" class="text-white">Acessar sistema</a>
                         </div>
                     </div>
                 </div>

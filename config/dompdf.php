@@ -140,8 +140,9 @@ return array(
          * North America standard is "letter"; other countries generally "a4"
          *
          * @see CPDF_Adapter::PAPER_SIZES for valid sizes ('letter', 'legal', 'A4', etc.)
+         * 21x31cm [medida abaixo em pt]
          */
-        "default_paper_size" => "a4",
+        "default_paper_size" => [0, 0, 651.97, 878.74],
 
         /**
          * The default font family

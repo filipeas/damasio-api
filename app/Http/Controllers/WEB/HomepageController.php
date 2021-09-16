@@ -74,10 +74,10 @@ class HomepageController extends Controller
             $page = $request->page;
 
         $search = "";
-        if ($request->has('search')){
+        if ($request->has('search')) {
             $search = $request->search;
             $url = "/api/subcategory/{$subcategory}/show?search={$search}&page={$page}";
-        }else{
+        } else {
             $url = "/api/subcategory/{$subcategory}/show?page={$page}";
         }
 
@@ -133,17 +133,77 @@ class HomepageController extends Controller
         }
     }
 
+    /**
+     * [TESTE]
+     * Método que printa exemplar de uma categoria no navegador.
+     */
+    public function showCatalog()
+    {
+        $user = User::where('id', 1)->first();
+
+        $categories = Category::whereNull('parent')->orderBy('title', 'ASC')->get();
+
+        $pagina = 0;
+
+        // gerando pdf do sumário
+        $arr_categories = [];
+        foreach ($categories as $category) {
+            $arr_pages = [];
+            foreach ($category->subcategories()->orderBy('title', 'ASC')->get() as $subcategory) {
+                if ($pagina == ($pagina - 1)) {
+                    array_push($arr_pages, [$subcategory->title => $pagina]);
+                    $pagina += (int)($subcategory->products()->count() / ($pagina - 2)) + 1;
+                    continue;
+                }
+                array_push($arr_pages, [$subcategory->title => $pagina]);
+                $pagina += (int)($subcategory->products()->count() / 9) + 1;
+            }
+            array_push($arr_categories, ['subcategories' => $arr_pages, 'category' => $category->title, 'color' => $this->random_color()]);
+        }
+
+        // criando array de categorias para inserir na coluna lateral de cada página gerada
+        $arr_columns_categories = array_chunk($arr_categories, 8);
+        // marcando arrays como não visitados
+        foreach ($arr_columns_categories as $key1 => $multiple_categories) {
+            foreach ($multiple_categories as $key2 => $actual_category) {
+                $arr_columns_categories[$key1][$key2]['marked'] = false;
+            }
+        }
+
+        // gerando pdfs das categorias
+        foreach ($categories as $category) {
+            // marcando arrays como não visitados
+            $arr_categories_in_column = [];
+            foreach ($arr_columns_categories as $key1 => $multiple_categories) {
+                foreach ($multiple_categories as $key2 => $actual_category) {
+                    if ($arr_columns_categories[$key1][$key2]['category'] == $category->title) {
+                        $arr_columns_categories[$key1][$key2]['marked'] = true;
+                        array_push($arr_categories_in_column, $arr_columns_categories[$key1]);
+                    } else {
+                        $arr_columns_categories[$key1][$key2]['marked'] = false;
+                    }
+                }
+            }
+            $pdf = PDF::loadView('index_teste', [
+                'category' => $category,
+                'categories_column' => $arr_categories_in_column[0],
+                'page' => 0
+            ]);
+
+            return $pdf->stream('catalogo_final.pdf');
+        }
+    }
 
     // gerando cores aleatorias para os titulos das categorias no sumario
-    // function random_color_part()
-    // {
-    //     return str_pad(dechex(mt_rand(0, 155)), 2, '0', STR_PAD_LEFT);
-    // }
+    function random_color_part()
+    {
+        return str_pad(dechex(mt_rand(0, 155)), 2, '0', STR_PAD_LEFT);
+    }
 
-    // function random_color()
-    // {
-    //     return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
-    // }
+    function random_color()
+    {
+        return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
+    }
 
     // (TESTES) - REMOVER
     /**
