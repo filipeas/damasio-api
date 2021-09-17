@@ -391,8 +391,7 @@ set_time_limit(0);
                     </div>
                     <div class="titulo">
                         <h4 class="text-justify m-0">
-                            {{ Str::limit(str_replace('/', '/ ', $product->description), 60) }} -
-                            {{ $maximoDeElementosPorPagina }} -> {{ strlen($product->application) }}
+                            {{ Str::limit(str_replace('/', '/ ', $product->description), 60) }}
                         </h4>
                     </div>
                     <div class="conteudo">

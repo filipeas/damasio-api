@@ -184,7 +184,7 @@ class HomepageController extends Controller
                     }
                 }
             }
-            $pdf = PDF::loadView('index_teste', [
+            $pdf = PDF::loadView('layout_lista', [
                 'category' => $category,
                 'categories_column' => $arr_categories_in_column[0],
                 'page' => 0
