@@ -369,6 +369,53 @@ set_time_limit(0);
                         <hr class="hr_titulo_categoria">
                     </div>
                 </td>
+
+                <!-- printando produto na folha -->
+                <td class="produto text-center"
+                    style="width: 240px !important; {{ strlen($product->application) > 300 ? 'height: 340px !important;' : '' }} padding: 5px 3px 0 3px;">
+                    <img style="width: 88px!important;"
+                        src="{{ $product->cover != '' ? 'storage/' . $product->cover : 'storage/no_image_available.jpg' }}">
+                    <div style="text-align: right!important; padding: 0px 0px; margin-top: -15px!important;">
+                        @foreach ($product->brands($product)->get() as $brand)
+                            <img style="{{ $loop->count > 5 ? 'width: 26px!important;' : 'width: 38px!important;' }} margin: 0px!important; padding: 0px!important; padding-left: 5px; {{ $loop->count > 1 ? 'padding: 15px 0px -5px 0px;' : 'padding: 5px 0px;' }}"
+                                src="{{ $brand->image != '' ? 'storage/' . $brand->image : 'storage/no_image_available.jpg' }}">
+                        @endforeach
+                    </div>
+                    <hr class="hr_titulo">
+                    <div class="codigo">
+                        <div
+                            style="position: absolute; width: 25px; border-top: 15px solid #1448A3; border-right: 5px solid transparent; color: #fff;">
+                            <h4 style="margin-top: -15px;">CÓD.:</h4>
+                        </div>
+                        <h4 style="margin-left: 35px;">{{ $product->cod }}</h4>
+                    </div>
+                    <div class="titulo">
+                        <h4 class="text-justify m-0">
+                            {{ Str::limit(str_replace('/', '/ ', $product->description), 60) }}
+                        </h4>
+                    </div>
+                    <div class="conteudo">
+                        <h4 class="marca">
+                            MARCA:
+                            <b>
+                                @foreach ($product->brands($product)->get() as $brand)
+                                    {{ $brand->title . ($loop->last ? '' : ' / ') }}
+                                @endforeach
+                            </b>
+                        </h4>
+                        <h4 class="aplicacao">APLICAÇÃO:
+                            <b>
+                                {{ $product->application }}
+                            </b>
+                            <hr class="hr_rodape">
+                        </h4>
+                    </div>
+                </td>
+
+                <?php
+                $produtosPorLinha++; // soma mais 1 produto na linha
+                $maximoDeElementosPorPagina--; // subtrai maximo de produtos na pagina
+                ?>
             @else
                 <!-- printando produto na folha -->
                 <td class="produto text-center"
