@@ -74,7 +74,7 @@ set_time_limit(0);
 
         .barra_topo {
             width: 100%;
-            height: 30px;
+            height: 0.80cm;
             top: 0px;
             left: 0;
             right: 0;
@@ -84,7 +84,7 @@ set_time_limit(0);
 
         .barra_rodape {
             width: 100%;
-            height: 40px;
+            height: 0.80cm;
             bottom: 0px;
             left: 0;
             right: 0;
@@ -268,14 +268,14 @@ set_time_limit(0);
             border-collapse: collapse;
             width: 100%;
             padding: 0px 52px;
-            /* margin-top: 20px !important; */
+            /* margin-top: -9px !important; */
         }
 
         #customers td,
         #customers th {
             font-family: 'swis721_cn_bt' !important;
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 0 8px;
         }
 
         #customers tr:nth-child(even) {
@@ -316,8 +316,8 @@ set_time_limit(0);
     $pageNumber = $page; // armazenando pagina inicial para realizar contagem
     // $tamanhoDaPagina = 1090; // tamanho da pagina
     // $printDaSubcategoria = false; // controla se a subcategoria foi printada na pagina
-    $tamanhoDaPaginaAtual = 2;
     $quantidadeDeProdutosPorPagina = 23;
+    $tamanhoDaPaginaAtual = 1.6; // tamanho livre de cada pagina (considerando o header e footer)
     ?>
 
     <!-- laço de subcategorias -->
@@ -325,15 +325,34 @@ set_time_limit(0);
     as $key => $subcategory)
 
         <?php
-        if ($key > 2) {
-            break;
-        }
+        // if ($key > 2) {
+        //     break;
+        // }
         ?>
 
         @foreach ($subcategory->products()->orderBy('id', 'ASC')->orderBy('description', 'ASC')->orderBy('application', 'ASC')->get()
     as $key_product => $product)
+            @if ($tamanhoDaPaginaAtual >= 26)
+                <!-- fechar tabela de produtos -->
+                {!! '</tbody></table>' !!}
+
+                <!-- salta-página -->
+                <div class="page_break"></div>
+
+                {{-- @if (!$loop->last) --}}
+                <!-- abrir tabela de produtos -->
+                {!! '<table id="customers"><thead><tr><th>CÓDIGO:</th><th>DESCRIÇÃO:</th><th>APLICAÇÃO:</th><th>MARCA:</th></tr></thead><tbody>' !!}
+                {{-- @endif --}}
+
+                <?php
+                $quantidadeDeProdutosPorPagina = 23;
+                $tamanhoDaPaginaAtual = 1.6;
+                // continue;
+                ?>
+            @endif
+
             <!-- printar titulo, coluna de categorias e pagina quando for o primeiro produto -->
-            @if ($quantidadeDeProdutosPorPagina === 23)
+            @if ($tamanhoDaPaginaAtual === 1.6)
                 @if ($pageNumber % 2 == 0)
                     <!-- número da página -->
                     <div class="numero_pagina">
@@ -367,16 +386,16 @@ set_time_limit(0);
             @if ($key_product === 0)
                 <?php
                 $quantidadeDeProdutosPorPagina -= 6;
-                $tamanhoDaPaginaAtual += 8;
+                $tamanhoDaPaginaAtual += 6;
                 ?>
 
                 <!-- printe o titulo da subcategoria caso seja o primeiro produto -->
-                <table style="margin-left: 0px; margin-top: -20px !important; padding: 0px 90px 40px 50px;">
+                <table style="margin-left: 0px; margin-top: -30px !important; padding: 0px 90px 40px 50px;">
                     <tbody>
                         <tr>
                             <td>
                                 <div class="categoria-1">
-                                    <h4>{{ $subcategory->title }} - {{ $tamanhoDaPaginaAtual }}</h4>
+                                    <h4>{{ $subcategory->title }}</h4>
                                     <hr class="hr_titulo_categoria">
                                 </div>
                             </td>
@@ -395,33 +414,36 @@ set_time_limit(0);
                 $quantidadeDeProdutosPorPagina -= 1;
                 
                 // quantidade de linhas da celula da tabela
-                $descricao = $product->description . ' TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO';
-                $aplicacao = $product->application . ' TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO';
-                $x = round(strlen($descricao) / 30);
-                $y = round(strlen($aplicacao) / 75);
+                $descricao = str_replace('/', '/ ', $product->description); // . ' TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO';
+                $aplicacao = $product->application; // . ' TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO';
+                $x = 0.4 + ceil(strlen($descricao) / 47) * 0.4;
+                $y = 0.4 + ceil(strlen($aplicacao) / 75) * 0.4;
                 $z = $product->brands($product)->count();
                 
                 if ($x >= $y && $x >= $z) {
-                    $max = 0.4 + $x * 0.4; // tamanho em cm
+                    $max = $x; // tamanho em cm
                 }
                 if ($y >= $x && $y >= $z) {
-                    $max = 0.4 + $y * 0.4; // tamanho em cm
+                    $max = $y; // tamanho em cm
                 }
                 if ($z >= $x && $z >= $y) {
-                    $max = 0.4 + $z * 0.4; // tamanho em cm
+                    $max = $z; // tamanho em cm
                 }
                 
-                // $max *= 38;
-                $tamanhoDaPaginaAtual += round($max);
+                $max = ceil($max);
+                $tamanhoDaPaginaAtual += $max;
                 ?>
 
                 <tr>
-                    <td style="height: {{ 12 * $max }}px;">
-                        {!! str_replace(',', '<br>', $product->cod) !!} - ({{ $tamanhoDaPaginaAtual }})
+                    <td style="height: {{ $max }}cm !important;">
+                        {!! str_replace(',', '<br>', $product->cod) !!}
                     </td>
-                    <td>{{ str_replace('/', '/ ', $descricao) }}
+                    <td>
+                        {{ $descricao }}
                     </td>
-                    <td>{{ $aplicacao }}</td>
+                    <td>
+                        {{ $aplicacao }}
+                    </td>
                     <td>
                         @foreach ($product->brands($product)->get() as $brand)
                             {!! $brand->title . ($loop->last ? '' : '<br>') !!}
@@ -430,26 +452,7 @@ set_time_limit(0);
                 </tr>
             @endif
 
-            @if ($tamanhoDaPaginaAtual >= 34)
-                <!-- fechar tabela de produtos -->
-                {!! '</tbody></table>' !!}
-
-                <!-- salta-página -->
-                <div class="page_break"></div>
-
-                @if (!$loop->last)
-                    <!-- abrir tabela de produtos -->
-                    {!! '<table id="customers"><thead><tr><th>CÓDIGO:</th><th>DESCRIÇÃO:</th><th>APLICAÇÃO:</th><th>MARCA:</th></tr></thead><tbody>' !!}
-                @endif
-
-                <?php
-                $quantidadeDeProdutosPorPagina = 23;
-                $tamanhoDaPaginaAtual = 2;
-                continue;
-                ?>
-            @endif
-
-            @if ($loop->last && $tamanhoDaPaginaAtual > 24)
+            @if ($loop->last && $tamanhoDaPaginaAtual > 16)
                 <!-- fechar tabela de produtos -->
                 {!! '</tbody></table>' !!}
 
@@ -458,9 +461,9 @@ set_time_limit(0);
 
                 <?php
                 $quantidadeDeProdutosPorPagina = 23;
-                $tamanhoDaPaginaAtual = 2;
+                $tamanhoDaPaginaAtual = 1.6;
                 ?>
-            @elseif($loop->last && $quantidadeDeProdutosPorPagina < 24) <!-- fechar tabela de produtos -->
+            @elseif($loop->last && $quantidadeDeProdutosPorPagina < 16) <!-- fechar tabela de produtos -->
                     {!! '</tbody></table>' !!}
             @endif
         @endforeach
