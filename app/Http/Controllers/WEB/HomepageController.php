@@ -143,23 +143,38 @@ class HomepageController extends Controller
 
         $categories = Category::whereNull('parent')->orderBy('title', 'ASC')->get();
 
-        $pagina = 0;
+        // pdfs gerados. é usado para fazer merge de todos os pdfs gerados no final
+        $pdfs = [];
+
+        // caminhos fixos
+        $path = public_path('storage/tmp'); // diretorio que guardará o pdf da subcategoria
+
+        // nº de páginas do PDF fixo
+        $pagina = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $user->pdf_fixo))), $dummy); //  + 2
 
         // gerando pdf do sumário
         $arr_categories = [];
         foreach ($categories as $category) {
             $arr_pages = [];
             foreach ($category->subcategories()->orderBy('title', 'ASC')->get() as $subcategory) {
-                if ($pagina == ($pagina - 1)) {
-                    array_push($arr_pages, [$subcategory->title => $pagina]);
-                    $pagina += (int)($subcategory->products()->count() / ($pagina - 2)) + 1;
-                    continue;
-                }
+                // if ($pagina == ($pagina - 1)) {
+                //     array_push($arr_pages, [$subcategory->title => $pagina]);
+                //     // $pagina += (int)($subcategory->products()->count() / ($pagina - 2)) + 1;
+                //     continue;
+                // }
                 array_push($arr_pages, [$subcategory->title => $pagina]);
-                $pagina += (int)($subcategory->products()->count() / 9) + 1;
+                // $pagina += (int)($subcategory->products()->count() / 9) + 1;
             }
             array_push($arr_categories, ['subcategories' => $arr_pages, 'category' => $category->title, 'color' => $this->random_color()]);
         }
+
+        // // gerando pdf do sumario da categoria
+        $sumario = PDF::loadView('sumario_final', ['categories' => $arr_categories, 'page' => $pagina]);
+        return $sumario->stream('sumario_final.pdf');
+        // $sumario->save($path . '/sumario.pdf'); // salvando pdf do sumario gerado
+
+        // // atualizando posição da página corrente
+        // $pagina = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path . '/sumario.pdf')), $dummy) + preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $user->pdf_fixo))), $dummy);
 
         // criando array de categorias para inserir na coluna lateral de cada página gerada
         $arr_columns_categories = array_chunk($arr_categories, 8);
@@ -184,14 +199,68 @@ class HomepageController extends Controller
                     }
                 }
             }
-            $pdf = PDF::loadView('layout_lista', [
-                'category' => $category,
-                'categories_column' => $arr_categories_in_column[0],
-                'page' => 0
-            ]);
 
-            return $pdf->stream('catalogo_final.pdf');
+            // $pdf = PDF::loadView('layout_lista', [
+            //     'category' => $category,
+            //     'categories_column' => $arr_categories_in_column[0],
+            //     'page' => $pagina,
+            // ]);
+            // return $pdf->stream('catalogo_final.pdf');
+
+            // percorrer subcategorias da categoria atual
+            foreach ($category->subcategories()->orderBy('title', 'ASC')->get()
+                as $key => $subcategory) {
+                gc_disable();
+                if ($pagina % 2 == 0) {
+                    $pdf = PDF::loadView('layout_lista', [
+                        'subcategory' => $subcategory,
+                        'categories_column' => $arr_categories_in_column[0],
+                        'page' => $pagina,
+                    ]);
+                } else {
+                    $pdf = PDF::loadView('layout_bloco', [
+                        'subcategory' => $subcategory,
+                        'categories_column' => $arr_categories_in_column[0],
+                        'page' => $pagina,
+                    ]);
+                }
+
+                // return $pdf->stream('catalogo_final.pdf'); // retornar view da subcategoria gerada
+                $fileName =  $subcategory->title . '_subcategoria_' . time() . '.' . 'pdf';
+
+                $pdf->save($path . '/' . $fileName);
+                array_push($pdfs, $path . '/' . $fileName); // guardar pdf da categoria no array final
+
+                // ajustando contagem de páginas para inserir a pagina atual correta no proximo loop
+                $pagina += preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path . '/' . $fileName)), $dummy) - 1;
+
+                gc_enable();
+                gc_collect_cycles();
+            }
+
+            break;
         }
+
+        // anexação final (juntando todas as categorias em um único arquivo)
+        // anexar todas as categorias em um unico arquivo
+        $pdfMerger = PDFMerger::init();
+        $pdfMerger->addPDF(public_path('storage' . $user->pdf_fixo), 'all'); // anexando as paginas fixas
+        // $pdfMerger->addPDF(public_path('storage/tmp/sumario.pdf'), 'all'); // anexando sumario criado
+        foreach ($pdfs as $newpdf) {
+            $numPages = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($newpdf)), $dummy) - 1;
+            $pdfMerger->addPDF($newpdf, "1-{$numPages}"); // anexando pdfs das categorias
+        }
+        $pdfMerger->merge();
+        $pdfMerger->save(public_path('storage/pdfs/catalogo_completo.pdf'), "file");
+
+        // salvar caminho do PDF na categoria do banco de dados
+        // $user->pdf_completo = 'pdfs/catalogo_completo.pdf';
+        // $user->save();
+
+        // limpando diretório temporario
+        $file = new Filesystem;
+        $file->cleanDirectory(public_path('storage/tmp'));
+        dd('processo finalizado com sucesso');
     }
 
     // gerando cores aleatorias para os titulos das categorias no sumario

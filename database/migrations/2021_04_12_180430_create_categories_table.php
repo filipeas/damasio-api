@@ -18,9 +18,12 @@ class CreateCategoriesTable extends Migration
             $table->unsignedBigInteger('parent')->nullable();
             $table->string('title');
             $table->string('pdf')->nullable();
+            $table->string('propaganda')->nullable();
+            $table->string('color')->nullable();
+            $table->boolean('model')->nullable();
             $table->timestamps();
 
-            $table->foreign('parent')->references('id')->on('categories');//->onDelete('CASCADE');
+            $table->foreign('parent')->references('id')->on('categories'); //->onDelete('CASCADE');
         });
     }
 

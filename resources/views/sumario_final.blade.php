@@ -24,255 +24,20 @@ set_time_limit(0); ?>
         body {
             margin: 0;
             padding: 0;
+            margin-top: 40px;
             font-family: 'swis721_cn_bt' !important;
         }
 
-        .card-pdf-11 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: blue; */
-            margin-left: 50px;
-            /* margin-top: -10px !important; */
-            padding-top: -20px;
-        }
-
-        .card-pdf-12 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 280px;
-            margin-top: -20px;
-        }
-
-        .card-pdf-13 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 520px;
-            margin-top: -20px;
-        }
-
-        .card-pdf-14 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 50px;
-            margin-top: 243px;
-        }
-
-        .card-pdf-15 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 280px;
-            margin-top: 243px;
-        }
-
-        .card-pdf-16 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 520px;
-            margin-top: 243px;
-        }
-
-        .card-pdf-17 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 50px;
-            margin-top: 505px;
-        }
-
-        .card-pdf-18 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 280px;
-            margin-top: 505px;
-        }
-
-        .card-pdf-19 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 520px;
-            margin-top: 505px;
-        }
-
-        .card-pdf-110 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 50px;
-            margin-top: 770px;
-        }
-
-        .card-pdf-111 {
-            position: absolute;
-            height: 330px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 280px;
-            margin-top: 770px;
-        }
-
-        .card-pdf-112 {
-            position: absolute;
-            height: 240px !important;
-            width: 210px !important;
-            /* background-color: red; */
-            margin-left: 520px;
-            margin-top: 770px;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-left: -15px;
-            margin-right: 15px;
-        }
-
-        .col-md-3,
-        .col-md-4 {
-            position: relative;
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-
-        .w-100 {
-            width: 100% !important;
-        }
-
-        .w-75 {
-            width: 75% !important;
-        }
-
-        .w-50 {
-            width: 50% !important;
-        }
-
-        .w-25 {
-            width: 25% !important;
-        }
-
-        .m-0 {
-            margin: 0 !important;
-        }
-
-        .mt-1 {
-            margin-top: 0.25rem !important;
-        }
-
-        .mt-2 {
-            margin-top: 0.5rem !important;
-        }
-
-        .mt-3 {
-            margin-top: 1rem !important;
-        }
-
-        .mt-4 {
-            margin-top: 2rem !important;
-        }
-
-        .mt-5 {
-            margin-top: 3rem !important;
-        }
-
-        .mb-1 {
-            margin-bottom: 0.25rem !important;
-        }
-
-        .mb-2 {
-            margin-bottom: 0.5rem !important;
-        }
-
-        .mb-3 {
-            margin-bottom: 1rem !important;
-        }
-
-        .mb-4 {
-            margin-bottom: 2rem !important;
-        }
-
-        .mb-5 {
-            margin-bottom: 3rem !important;
-        }
-
-        .p-1 {
-            padding: 0.25rem !important;
-        }
-
-        .p-2 {
-            padding: 0.5rem !important;
-        }
-
-        .p-3 {
-            padding: 1rem !important;
-        }
-
-        .p-4 {
-            padding: 2rem !important;
-        }
-
-        .p-5 {
-            padding: 3rem !important;
-        }
-
-        .pt-1 {
-            padding-top: 0.25rem !important;
-        }
-
-        .pt-2 {
-            padding-top: 0.5rem !important;
-        }
-
-        .pt-3 {
-            padding-top: 1rem !important;
-        }
-
-        .pt-4 {
-            padding-top: 2rem !important;
-        }
-
-        .pt-5 {
-            padding-top: 3rem !important;
-        }
-
-        .text-white {
-            color: #fff !important;
-        }
-
-        .text-primary {
-            color: #007bff !important;
-        }
-
-        .text-left {
-            text-align: left !important;
-        }
-
-        .bg-primary {
-            background-color: #007bff !important;
-        }
-
-        .bg-danger {
-            background-color: #dc3545 !important
-        }
-
-        .float-right {
-            float: right !important;
+        table,
+        tr,
+        td,
+        th,
+        thead,
+        tbody {
+            font-family: 'swis721_cn_bt';
+            font-style: normal;
+            font-weight: 700;
+            src: url('{{ public_path('fonts/Swis721_Cn_BT_Bold.ttf') }}') format('truetype');
         }
 
         .page_break {
@@ -320,11 +85,11 @@ set_time_limit(0); ?>
 
         .sumario {
             z-index: 9;
-            position: absolute;
+            position: relative !important;
             height: 120px !important;
             width: 600px !important;
             margin-left: 90px;
-            margin-top: 50px !important;
+            margin-top: 25px !important;
             padding: 0px !important;
             display: inline-block;
             background: #1448A3;
@@ -342,10 +107,9 @@ set_time_limit(0); ?>
         }
 
         .titulo_categoria {
-            height: 30px !important;
+            height: 0px !important;
             width: 250px !important;
-            padding-top: -10px !important;
-            border-bottom: 30px solid #1448A3;
+            padding-top: 0px !important;
             border-right: 20px solid transparent;
         }
 
@@ -353,25 +117,40 @@ set_time_limit(0); ?>
             color: #fff;
             font-style: normal;
             font-size: 16px;
-            margin-top: 30px;
+            margin-top: 0px;
             margin-left: 5px;
         }
 
         .box-sumario {
-            margin-top: 200px !important;
-            margin-left: 60px;
+            /* font-family: 'swis721_cn_bt' !important; */
+            /* background-color: red; */
+            /* margin-top: 40px !important; */
+            /* height: 1080px; */
+            /* margin-left: 60px; */
             /* width: 100%; */
             /* background-color: red; */
         }
 
-        tr {
-            width: 150px !important;
+        .box-sumario-com-titulo {
+            margin-top: 200px !important;
+            /* height: 900px; */
         }
 
-        td {
-            /* background-color: red; */
-            /* height: 30px; */
-            /* width: 190px !important; */
+        .bloco-esquerda {
+            position: relative !important;
+            /* float: left; */
+            /* background-color: green; */
+            width: 400px !important;
+            left: 60px !important;
+        }
+
+        .bloco-direita {
+            top: 0px !important;
+            position: absolute !important;
+            float: right;
+            /* margin-left: 400px; */
+            /* background-color: blue; */
+            width: 400px !important;
         }
 
     </style>
@@ -379,58 +158,99 @@ set_time_limit(0); ?>
 
 <body>
     <!-- barra azul que fica no topo da página -->
-    <div class="barra_topo"></div>
-
-    <div class="titulo_topo_esquerda">
-        <h5>SUMÁRIO</h5>
-    </div>
-
-    {{-- titulo do sumário --}}
-    <div class="sumario">
-        <h1>SUMÁRIO</h1>
-    </div>
-
-    <div class="box-sumario">
-
-        <table>
-            {{-- @for ($i = 0; $i < 4; $i++) --}}
-            @foreach ($categories as $key => $category) {{-- abrir linha se estiver na primeira coluna --}}
-                @if ($key % 2 == 0)
-                    <tr>
-                @endif
-
-                <td style="vertical-align: baseline;">
-                    {{-- conteudo da categoria --}}
-                    <div class="titulo_categoria" style="border-bottom: 30px solid #{{ $category['color'] }};">
-                        <h1>{{ $category['category'] }}</h1>
-                    </div>
-
-                    <table>
-                        @foreach ($category['subcategories'] as $subcategory)
-                            @foreach ($subcategory as $titulo => $pagina)
-                                <tr>
-                                    <td style=" width: 180px !important;">{{ $titulo }} </td>
-                                    {{-- <td style="background-color: gold; width: 70px !important;"> .......................... </td> --}}
-                                    <td style=" width: 200px !important;">{{ 'Pág ' . $pagina }}</td>
-                                </tr>
-                            @endforeach
-                        @endforeach
-                    </table>
-                </td>
-
-                {{-- fechar linha se estiver na segunda coluna --}}
-                @if ($key % 2 != 0)
-                    </tr>
-                @endif
-            @endforeach
-            {{-- @endfor --}}
-        </table>
-
+    <div class="barra_topo">
+        <div class="titulo_topo_esquerda">
+            <h5>SUMÁRIO</h5>
+        </div>
     </div>
 
     <!-- barra azul que fica no rodappe da página -->
     <div class="barra_rodape"></div>
 
+    <!-- titulo do sumário -->
+    <div class="sumario">
+        <h1>SUMÁRIO</h1>
+    </div>
+
+    <?php
+    $pagina = $page;
+    $limiteDaFolhaComTitulo = 900;
+    $primeiraPagina = true;
+    $limiteDaFolhaSemTitulo = 1080;
+    $colunaAtual = false; // false = esquerda | true = direita
+    $contadorDeLimite = 0;
+    // dd($categories);
+    ?>
+
+    <div class="box-sumario" style="margin-top: 25px;">
+        @foreach ($categories as $key => $category)
+            <?php
+            // if ($key > 7) {
+            //     continue;
+            // }
+            ?>
+
+            {{-- @if ($primeiraPagina) --}}
+            <div class="{{ !$colunaAtual ? 'bloco-esquerda' : 'bloco-direita' }}"
+                style="{{ !$colunaAtual ? '' : 'margin-top: ' . ($contadorDeLimite + 4) . 'px!important;' }}">
+                <div class="titulo_categoria" style="border-bottom: 30px solid #{{ $category['color'] }};">
+                    <h1>{{ $category['category'] }}
+                    </h1>
+                </div>
+            </div>
+
+            <?php
+            // conta a altura da linha do titulo da categoria
+            $contadorDeLimite += 30;
+            ?>
+
+            @foreach ($category['subcategories'] as $subcategory)
+                @foreach ($subcategory as $titulo => $pagina)
+                    <table id="customers" class="{{ !$colunaAtual ? 'bloco-esquerda' : 'bloco-direita' }}"
+                        style="{{ !$colunaAtual ? '' : 'margin-top: ' . $contadorDeLimite . 'px!important;' }}">
+                        <tr>
+                            <td style=" width: 180px !important; height: 25px!important;">
+                                {{ $titulo }}
+                            </td>
+                            {{-- <td style="background-color: gold; width: 70px !important;"> .......................... </td> --}}
+                            <td style=" width: 200px !important;">
+                                {{ 'Pág ' . $pagina }}
+                            </td>
+                        </tr>
+                    </table>
+
+                    <?php
+                    // conta altura da linha da subcategoria
+                    $contadorDeLimite += 25;
+                    
+                    if ($primeiraPagina) {
+                        if ($contadorDeLimite > 750 && !$colunaAtual) {
+                            $colunaAtual = true;
+                            $contadorDeLimite = 0;
+                        } elseif ($contadorDeLimite >= 850 && $colunaAtual) {
+                            $primeiraPagina = false;
+                            $colunaAtual = false;
+                            $contadorDeLimite = 0;
+                            echo '<div class="page_break"></div>';
+                        }
+                    } else {
+                        if ($contadorDeLimite > 900 && !$colunaAtual) {
+                            $colunaAtual = true;
+                            $contadorDeLimite = 0;
+                        } elseif ($contadorDeLimite >= 1000 && $colunaAtual) {
+                            $colunaAtual = false;
+                            $contadorDeLimite = 0;
+                            echo '<div class="page_break"></div>';
+                        }
+                    }
+                    ?>
+                @endforeach
+            @endforeach
+            {{-- @else
+                1
+            @endif --}}
+        @endforeach
+    </div>
 </body>
 
 </html>

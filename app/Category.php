@@ -16,7 +16,7 @@ class Category extends Model
     ];
 
     protected $fillable = [
-        'parent', 'title', 'pdf',
+        'parent', 'title', 'pdf', 'propaganda', 'color', 'model',
     ];
 
     // retorna produtos da subcategoria atual
