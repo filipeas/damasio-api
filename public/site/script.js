@@ -15,10 +15,12 @@ $(function () {
                         $('.JProgressPDF').css("width", ((response.data.countFinished / response.data.countAllCategories) * 100) + "%");
                         $('.JProgressPDF').text("100%");
                     } else {
-                        var progress = ((response.data.countFinished / response.data.countAllCategories) * 100);
+                        var progress = Math.round(((response.data.countFinished / response.data.countAllCategories) * 100));
                         $('.JProgressPDF').css("width", (progress == 0 ? 10 : progress) + "%");
                         $('.JProgressPDF').text(progress + "%");
                     }
+                    $('.jProgressPDFFinal').css('color', (response.data.pdfFinalIsGenerated == true ? 'green' : 'red'));
+                    $('.jProgressPDFFinal').text((response.data.pdfFinalIsGenerated == true ? 'Sim' : 'Não'));
                 }
             });
         }, 15000);

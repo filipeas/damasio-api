@@ -193,7 +193,8 @@ set_time_limit(0); ?>
             {{-- @if ($primeiraPagina) --}}
             <div class="{{ !$colunaAtual ? 'bloco-esquerda' : 'bloco-direita' }}"
                 style="{{ !$colunaAtual ? '' : 'margin-top: ' . ($contadorDeLimite + 4) . 'px!important;' }}">
-                <div class="titulo_categoria" style="border-bottom: 30px solid #{{ $category['color'] }};">
+                <div class="titulo_categoria"
+                    style="border-bottom: 30px solid #{{ $category['color'] == null ? '1448A3' : $category['color'] }}; color: #{{ $category['title_color'] == null ? 'fff' : $category['title_color'] }}">
                     <h1>{{ $category['category'] }}
                     </h1>
                 </div>

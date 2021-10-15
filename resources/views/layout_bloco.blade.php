@@ -338,7 +338,7 @@ set_time_limit(0);
             <div style="position: absolute; top: 0px;">
                 @foreach ($categories_column as $key_category => $category_selected)
                     <div class="{{ $key_category == 0 ? 'espacamento_tabela_1' : 'espacamento_tabela_2' }} {{ $pageNumber % 2 == 0 ? 'espacamento_esquerda' : 'espacamento_direita' }}"
-                        style="{{ $category_selected['marked'] ? 'color: #fff; background-color: #' . $category_selected['color'] . ';' : '' }}">
+                        style="{{ $category_selected['marked'] ? 'color: #' . ($category_selected['title_color'] == null ? 'fff' : $category_selected['title_color']) . '; background-color: #' . ($category_selected['color'] == null ? '1448A3' : $category_selected['color']) . ';' : '' }}">
                         {{ $category_selected['category'] }}</div>
                 @endforeach
             </div>

@@ -53,9 +53,35 @@ class CategoryController extends BaseController
      */
     public function store(StoreCategory $request)
     {
+        $category = new Category();
+        $category->title = $request->title;
+
+        if ($request->hasFile('propaganda')) {
+            $image = $request->file('propaganda');
+
+            $name = Str::slug($request->title . (time()));
+            $folder = '/uploads/PDF/';
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+
+            $this->uploadOne($image, $folder, 'public', $name);
+
+            $category->propaganda = $filePath;
+        }
+
+        if ($request->has('color'))
+            $category->color = $request->color;
+
+        if ($request->has('title_color'))
+            $category->title_color = $request->title_color;
+
+        if ($request->has('model'))
+            $category->model = $request->model;
+
+        $category->save();
+
         return $this->sendResponse(
             [
-                'category' => new CategoryResource(Category::create($request->all(), 200)),
+                'category' => new CategoryResource($category),
             ],
             'Categoria cadastrada com sucesso',
         );
@@ -115,7 +141,7 @@ class CategoryController extends BaseController
      * 
      * PATCH METHOD
      */
-    public function update(UpdateCategory $request, int $category)
+    public function updatecategory(UpdateCategory $request, int $category)
     {
         $category = Category::where('id', $category)->first();
 
@@ -124,6 +150,31 @@ class CategoryController extends BaseController
         }
 
         $category->title = $request->title;
+
+        if ($request->hasFile('propaganda')) {
+            $image = $request->file('propaganda');
+
+            $name = Str::slug($request->title . (time()));
+            $folder = '/uploads/PDF/';
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+
+            $this->uploadOne($image, $folder, 'public', $name);
+
+            // remove old propaganda
+            File::delete(storage_path('app/public' . $category->propaganda));
+
+            $category->propaganda = $filePath;
+        }
+
+        if ($request->has('color'))
+            $category->color = $request->color;
+
+        if ($request->has('title_color'))
+            $category->title_color = $request->title_color;
+
+        if ($request->has('model'))
+            $category->model = $request->model;
+
         $category->save();
 
         return $this->sendResponse(

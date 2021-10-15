@@ -16,7 +16,7 @@ class Category extends Model
     ];
 
     protected $fillable = [
-        'parent', 'title', 'pdf', 'propaganda', 'color', 'model',
+        'parent', 'title', 'pdf', 'propaganda', 'title_color', 'color', 'model',
     ];
 
     // retorna produtos da subcategoria atual
@@ -82,6 +82,8 @@ class Category extends Model
                 foreach ($category->subcategories()->get() as $subcategory) {
                     $subcategory->delete();
                 }
+                // remove cover
+                File::delete(storage_path('app/public' . $category->propaganda));
             } else { // remover se for subcategoria...
                 // remove produtos
                 foreach ($category->products()->get() as $product) {

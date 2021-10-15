@@ -98,6 +98,43 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $output = [
+            [
+                'name' => 'title',
+                'contents' => $request->input('title'),
+            ]
+        ];
+
+        if ($request->has('color')) {
+            $output[] = [
+                'name' => 'color',
+                'contents' => $request->input('color'),
+            ];
+        };
+
+        if ($request->has('title_color')) {
+            $output[] = [
+                'name' => 'title_color',
+                'contents' => $request->input('title_color'),
+            ];
+        }
+
+        if ($request->has('model')) {
+            $output[] = [
+                'name' => 'model',
+                'contents' => $request->input('model'),
+            ];
+        }
+
+        if ($request->hasFile('propaganda')) {
+            $output[] = [
+                'name' => 'propaganda',
+                'filename' => $request->file('propaganda')->getClientOriginalName(),
+                'Mime-Type' => $request->file('propaganda')->getClientMimeType(),
+                'contents' => fopen($request->file('propaganda')->path(), 'r'),
+            ];
+        }
+
         try {
             $client = new \GuzzleHttp\Client();
             $response = $client->post(env('API_URL') . '/api/user/category', [
@@ -105,7 +142,7 @@ class CategoryController extends Controller
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $request->session()->get('token'),
                 ],
-                'form_params' => $request->all(),
+                'multipart' => $output,
             ]);
 
             json_decode($response->getBody()->getContents());
@@ -176,14 +213,51 @@ class CategoryController extends Controller
      */
     public function update(Request $request, int $category)
     {
+        $output = [
+            [
+                'name' => 'title',
+                'contents' => $request->input('title'),
+            ]
+        ];
+
+        if ($request->has('color')) {
+            $output[] = [
+                'name' => 'color',
+                'contents' => $request->input('color'),
+            ];
+        };
+
+        if ($request->has('title_color')) {
+            $output[] = [
+                'name' => 'title_color',
+                'contents' => $request->input('title_color'),
+            ];
+        }
+
+        if ($request->has('model')) {
+            $output[] = [
+                'name' => 'model',
+                'contents' => $request->input('model'),
+            ];
+        }
+
+        if ($request->hasFile('propaganda')) {
+            $output[] = [
+                'name' => 'propaganda',
+                'filename' => $request->file('propaganda')->getClientOriginalName(),
+                'Mime-Type' => $request->file('propaganda')->getClientMimeType(),
+                'contents' => fopen($request->file('propaganda')->path(), 'r'),
+            ];
+        }
+
         try {
             $client = new \GuzzleHttp\Client();
-            $response = $client->put(env('API_URL') . "/api/user/category/{$category}", [
+            $response = $client->post(env('API_URL') . "/api/user/category/{$category}/updatecategory", [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . $request->session()->get('token'),
                 ],
-                'form_params' => $request->all(),
+                'multipart' => $output,
             ]);
 
             $data = json_decode($response->getBody()->getContents());
@@ -194,11 +268,11 @@ class CategoryController extends Controller
                 return redirect()->route('logout')->with('message', json_decode($e->getResponse()->getBody()->getContents())->message);
             }
 
-            return redirect()->route('user.category.index')->with([
+            return redirect()->route('user.category.edit', ['category' => $category])->with([
                 'error' => true,
                 'message' => [
                     [
-                        [json_decode($e->getResponse()->getBody()->getContents())->message],
+                        [json_decode($e->getResponse()->getBody()->getContents())->errors],
                     ],
                 ],
             ]);

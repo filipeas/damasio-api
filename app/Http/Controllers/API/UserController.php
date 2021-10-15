@@ -36,18 +36,36 @@ class UserController extends BaseController
             return $this->sendError('Usuário não encontrado');
         }
 
-        // remove pdf_fixo
-        File::delete(storage_path('app/public' . $user->pdf_fixo));
+        if ($request->hasFile('pdf_fixo')) {
+            // remove pdf_fixo
+            File::delete(storage_path('app/public' . $user->pdf_fixo));
 
-        // armazena pdf no diretorio correto
-        $image =  $request->pdf_fixo;
-        $name = "paginas-fixas";
-        $folder = '/fixed pages/';
-        $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
-        $this->uploadOne($image, $folder, 'public', $name);
+            // armazena pdf no diretorio correto
+            $image =  $request->pdf_fixo;
+            $name = "paginas-fixas";
+            $folder = '/fixed pages/';
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            $this->uploadOne($image, $folder, 'public', $name);
 
-        // salvando mudança no banco de dados
-        $user->pdf_fixo = $filePath;
+            // salvando mudança no banco de dados
+            $user->pdf_fixo = $filePath;
+        }
+
+        if ($request->hasFile('pdf_completo')) {
+            // remove pdf_completo
+            File::delete(storage_path('app/public' . $user->pdf_completo));
+
+            // armazena pdf no diretorio correto
+            $image =  $request->pdf_completo;
+            $name = "catalogo_completo";
+            $folder = 'pdfs/';
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            $this->uploadOne($image, $folder, 'public', $name);
+
+            // salvando mudança no banco de dados
+            $user->pdf_completo = $filePath;
+        }
+
         $user->save();
 
         return $this->sendResponse(['user' => new ResourcesUser($user)], 'Configuração realizada com sucesso');

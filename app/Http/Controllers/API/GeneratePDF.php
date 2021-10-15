@@ -32,6 +32,7 @@ class GeneratePDF extends BaseController
                 'countAllCategories' => $countAllCategories,
                 'countInProgress' => $countInProgress,
                 'countFinished' => $countFinished,
+                'pdfFinalIsGenerated' => (auth()->user()->pdf_completo != null ? true : false),
             ],
             'Analise de processamento das categorias',
         );

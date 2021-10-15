@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('catalogo', 'WEB\HomepageController@showCatalog'); // rota de teste. apagar depois...
+// Route::get('catalogo', 'WEB\HomepageController@showCatalog'); // rota de teste. apagar depois...
 
 Route::get('/', 'WEB\HomepageController@home')->name('site.home');
 Route::get('/categoria/{category}/visualizar', 'WEB\HomepageController@showCategory')->name('site.category');
@@ -40,7 +40,7 @@ Route::group(['prefix' => 'usuario', 'middleware' => ['check_session', 'check_us
     Route::get('categoria/cadastrar', 'WEB\CategoryController@create')->name('user.category.create');
     Route::post('categoria/cadastrar/do', 'WEB\CategoryController@store')->name('user.category.store');
     Route::get('categoria/{category}/editar', 'WEB\CategoryController@edit')->name('user.category.edit');
-    Route::put('categoria/{category}/editar/do', 'WEB\CategoryController@update')->name('user.category.update');
+    Route::patch('categoria/{category}/editar/do', 'WEB\CategoryController@update')->name('user.category.update');
     Route::delete('categoria/excluir/{category}/do', 'WEB\CategoryController@destroy')->name('user.category.destroy');
 
     // ROTA DA TELA DE MANIPULAÇÃO DOS DADOS DA SUBCATEGORIAS

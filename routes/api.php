@@ -17,6 +17,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth:api']], function () {
     
     // CRUD DAS CATEGORIAS
     Route::resource('/category', 'API\CategoryController');
+    Route::post('/category/{category}/updatecategory', 'API\CategoryController@updatecategory');
     Route::post('/category/{category}/pdf', 'API\CategoryController@storePDF');
 
     // CRUD DAS SUBCATEGORIAS

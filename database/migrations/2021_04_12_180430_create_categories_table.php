@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('title');
             $table->string('pdf')->nullable();
             $table->string('propaganda')->nullable();
+            $table->string('title_color')->nullable();
             $table->string('color')->nullable();
             $table->boolean('model')->nullable();
             $table->timestamps();

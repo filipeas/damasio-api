@@ -12,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class GenerateFinalPDF implements ShouldQueue
 {
@@ -26,17 +27,6 @@ class GenerateFinalPDF implements ShouldQueue
     public function __construct(User $user)
     {
         $this->user = $user;
-    }
-
-    // gerando cores aleatorias para os titulos das categorias no sumario
-    function random_color_part()
-    {
-        return str_pad(dechex(mt_rand(0, 155)), 2, '0', STR_PAD_LEFT);
-    }
-
-    function random_color()
-    {
-        return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
     }
 
     /**
@@ -67,33 +57,37 @@ class GenerateFinalPDF implements ShouldQueue
         $path = public_path('storage/tmp'); // diretorio que guardará o pdf da categoria
 
         // nº de páginas do PDF fixo
-        $pagina = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $this->user->pdf_fixo))), $dummy) + 2;
+        $pagina = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $this->user->pdf_fixo))), $dummy);
 
-        // gerando pdf do sumário
+        // gerando pdf do sumário (gerar a primeira vez para calcular a quantidade de paginas)
         $arr_categories = [];
         foreach ($categories as $category) {
             $arr_pages = [];
             foreach ($category->subcategories()->orderBy('title', 'ASC')->get() as $subcategory) {
-                if ($pagina == ($pagina - 1)) {
-                    array_push($arr_pages, [$subcategory->title => $pagina]);
-                    $pagina += (int)($subcategory->products()->count() / ($pagina - 2)) + 1;
-                    continue;
-                }
                 array_push($arr_pages, [$subcategory->title => $pagina]);
-                $pagina += (int)($subcategory->products()->count() / 9) + 1;
             }
-            array_push($arr_categories, ['subcategories' => $arr_pages, 'category' => $category->title, 'color' => $this->random_color()]);
+            array_push($arr_categories, [
+                'subcategories' => $arr_pages,
+                'category' => $category->title,
+                'color' => $category->color,
+                'title_color' => $category->title_color,
+            ]);
         }
 
         // gerando pdf do sumario da categoria
-        $sumario = PDF::loadView('sumario_final', ['categories' => $arr_categories]);
+        $sumario = PDF::loadView('sumario_final', [
+            'categories' => $arr_categories,
+            'page' => $pagina
+        ]);
+        // return $sumario->stream('sumario_final.pdf');
         $sumario->save($path . '/sumario.pdf'); // salvando pdf do sumario gerado
 
         // atualizando posição da página corrente
-        $pagina = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path . '/sumario.pdf')), $dummy) + preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $this->user->pdf_fixo))), $dummy);
+        $paginasDoSumario = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path . '/sumario.pdf')), $dummy) - 1;
+        $pagina = $paginasDoSumario + preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $this->user->pdf_fixo))), $dummy);
 
         // criando array de categorias para inserir na coluna lateral de cada página gerada
-        $arr_columns_categories = array_chunk($arr_categories, 5);
+        $arr_columns_categories = array_chunk($arr_categories, 8);
         // marcando arrays como não visitados
         foreach ($arr_columns_categories as $key1 => $multiple_categories) {
             foreach ($multiple_categories as $key2 => $actual_category) {
@@ -101,9 +95,20 @@ class GenerateFinalPDF implements ShouldQueue
             }
         }
 
+        // reseta array de categorias para montar o sumário final
+        $arr_categories = [];
+
         // gerando pdfs das categorias
-        foreach ($categories as $category) {
+        foreach ($categories as $key => $category) {
+            // teste para as 4 primeiras categorias
+            // if ($key > 4) {
+            //     continue;
+            // }
+
             gc_disable();
+
+            // reseta o array de paginas de subcategorias para montar o sumário final
+            $arr_pages = [];
 
             // marcando arrays como não visitados
             $arr_categories_in_column = [];
@@ -118,34 +123,76 @@ class GenerateFinalPDF implements ShouldQueue
                 }
             }
 
-            // gerando pdf da categoria com paginação
-            $pdf = PDF::loadView('index_final', ['categories' => $category, 'categories_column' => $arr_categories_in_column[0], 'page' => $pagina]);
-            // return $pdf->stream('catalogo_final.pdf');
-
-            $fileName =  $category->title . '.' . 'pdf';
-
-            $pdf->save($path . '/' . $fileName);
-            array_push($pdfs, $path . '/' . $fileName); // guardar pdf da categoria no array final
-
-            // ajustando contagem de páginas para inserir a pagina atual correta no proximo loop
-            foreach ($category->subcategories()->orderBy('title', 'ASC')->get() as $subcategory) {
-                if ($pagina == ($pagina - 1)) {
-                    $pagina += (int)($subcategory->products()->count() / ($pagina - 2)) + 1;
-                    continue;
-                }
-                $pagina += (int)($subcategory->products()->count() / 9) + 1;
+            if ($category->propaganda != '') {
+                array_push($pdfs, public_path('storage' . $category->propaganda)); // guardar pdf da propaganda da subcategoria no array final
+                $pagina += preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $category->propaganda))), $dummy);
             }
+
+            // percorrer subcategorias da categoria atual
+            foreach ($category->subcategories()->orderBy('title', 'ASC')->get()
+                as $key => $subcategory) {
+                // atualizando numero de paginas do sumario
+                array_push($arr_pages, [$subcategory->title => $pagina]);
+
+                gc_disable();
+                if ($category->model == 1) {
+                    $pdf = PDF::loadView('layout_lista', [
+                        'subcategory' => $subcategory,
+                        'categories_column' => $arr_categories_in_column[0],
+                        'page' => $pagina - 1,
+                    ]);
+                } elseif ($category->model == 0) {
+                    $pdf = PDF::loadView('layout_bloco', [
+                        'subcategory' => $subcategory,
+                        'categories_column' => $arr_categories_in_column[0],
+                        'page' => $pagina - 1,
+                    ]);
+                } else {
+                    $pdf = PDF::loadView('layout_lista', [
+                        'subcategory' => $subcategory,
+                        'categories_column' => $arr_categories_in_column[0],
+                        'page' => $pagina - 1,
+                    ]);
+                }
+
+                $fileName =  Str::slug($subcategory->title) . '_subcategoria_' . time() . '.' . 'pdf';
+
+                $pdf->save($path . '/' . $fileName);
+                array_push($pdfs, $path . '/' . $fileName); // guardar pdf da subcategoria no array final
+
+                // ajustando contagem de páginas para inserir a pagina atual correta no proximo loop
+                $paginasDoPDFAtual = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path . '/' . $fileName)), $dummy);
+                $pagina += ($paginasDoPDFAtual == 1 ? $paginasDoPDFAtual : ($paginasDoPDFAtual - 1));
+
+                gc_enable();
+                gc_collect_cycles();
+            }
+
+            // array das categorias para o sumário
+            array_push($arr_categories, [
+                'subcategories' => $arr_pages,
+                'category' => $category->title,
+                'color' => $category->color,
+                'title_color' => $category->title_color,
+            ]);
 
             gc_enable();
             gc_collect_cycles();
         }
 
+        // gerando pdf final do sumario
+        $sumario = PDF::loadView('sumario_final', ['categories' => $arr_categories, 'page' => $pagina]);
+        $sumario->save($path . '/sumario.pdf'); // salvando pdf do sumario gerado
+
+        // anexação final (juntando todas as categorias em um único arquivo)
         // anexar todas as categorias em um unico arquivo
         $pdfMerger = PDFMerger::init();
         $pdfMerger->addPDF(public_path('storage' . $this->user->pdf_fixo), 'all'); // anexando as paginas fixas
-        $pdfMerger->addPDF(public_path('storage/tmp/sumario.pdf'), 'all'); // anexando sumario criado
+        $pdfMerger->addPDF($path . '/sumario.pdf', 'all'); // anexando sumario criado
         foreach ($pdfs as $newpdf) {
             $numPages = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($newpdf)), $dummy) - 1;
+            if ($numPages === 0)
+                $numPages = 1;
             $pdfMerger->addPDF($newpdf, "1-{$numPages}"); // anexando pdfs das categorias
         }
         $pdfMerger->merge();

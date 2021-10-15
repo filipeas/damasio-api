@@ -29,7 +29,8 @@ class ConfigPDF extends FormRequest
     public function rules()
     {
         return [
-            'pdf_fixo' => ['required', 'mimes:pdf', 'max:10000'],
+            'pdf_fixo' => ['nullable', 'mimes:pdf', 'max:10000'],
+            'pdf_completo' => ['nullable', 'mimes:pdf', 'max:10000'],
         ];
     }
 }

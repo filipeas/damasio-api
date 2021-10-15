@@ -30,6 +30,10 @@ class UpdateCategory extends FormRequest
     {
         return [
             'title' => ['required', 'min:3', 'max:30'],
+            'propaganda' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
+            'title_color' => ['nullable', 'min:3', 'max:6'],
+            'color' => ['nullable', 'min:3', 'max:6'],
+            'model' => ['nullable', 'bool'],
         ];
     }
 }
