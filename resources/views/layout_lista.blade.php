@@ -421,7 +421,7 @@ set_time_limit(0);
             // quantidade de linhas da celula da tabela
             $descricao = str_replace('/', '/ ', $product->description);
             $aplicacao = $product->application;
-            $x = 0.4 + ceil(strlen($descricao) / 47) * 0.4;
+            $x = 0.4 + ceil(strlen($descricao) / 43) * 0.4;
             $y = 0.4 + ceil(strlen($aplicacao) / 75) * 0.4;
             $z = $product->brands($product)->count();
             
@@ -435,7 +435,7 @@ set_time_limit(0);
                 $max = $z; // tamanho em cm
             }
             
-            $max = ceil($max);
+            $max = ceil($max) - 1 == 0 ? 1 : ceil($max) - 1;
             $tamanhoDaPaginaAtual += $max;
             ?>
 
@@ -462,7 +462,7 @@ set_time_limit(0);
             // quantidade de linhas da celula da tabela
             $descricao = str_replace('/', '/ ', $product->description);
             $aplicacao = $product->application;
-            $x = 0.4 + ceil(strlen($descricao) / 47) * 0.4;
+            $x = 0.4 + ceil(strlen($descricao) / 43) * 0.4;
             $y = 0.4 + ceil(strlen($aplicacao) / 75) * 0.4;
             $z = $product->brands($product)->count();
             
@@ -476,7 +476,7 @@ set_time_limit(0);
                 $max = $z; // tamanho em cm
             }
             
-            $max = ceil($max);
+            $max = ceil($max) - 1 == 0 ? 1 : ceil($max) - 1;
             $tamanhoDaPaginaAtual += $max;
             ?>
 
