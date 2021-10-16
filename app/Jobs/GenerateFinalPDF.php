@@ -125,7 +125,7 @@ class GenerateFinalPDF implements ShouldQueue
 
             if ($category->propaganda != '') {
                 array_push($pdfs, public_path('storage' . $category->propaganda)); // guardar pdf da propaganda da subcategoria no array final
-                $pagina += preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $category->propaganda))), $dummy);
+                $pagina += preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $category->propaganda))), $dummy) + 1;
             }
 
             // percorrer subcategorias da categoria atual
