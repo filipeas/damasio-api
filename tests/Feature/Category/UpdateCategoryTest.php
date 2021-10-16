@@ -51,8 +51,8 @@ class UpdateCategoryTest extends TestCase
         $this->assertEquals(1, Category::all()->count());
 
         // atualizando categoria
-        $this->put(
-            'api/user/category/1',
+        $this->post(
+            'api/user/category/1/updatecategory',
             [
                 'title' => 'categoria 1',
             ],
@@ -92,8 +92,8 @@ class UpdateCategoryTest extends TestCase
         $this->assertEquals(1, Category::all()->count());
 
         // atualizando categoria
-        $this->put(
-            'api/user/category/1',
+        $this->post(
+            'api/user/category/1/updatecategory',
             [
                 'title' => '',
             ],
@@ -133,8 +133,8 @@ class UpdateCategoryTest extends TestCase
         $this->assertEquals(1, Category::all()->count());
 
         // atualizando categoria
-        $this->put(
-            'api/user/category/1',
+        $this->post(
+            'api/user/category/1/updatecategory',
             [
                 'title' => '123456789123456789123456789123456789123456789123456789',
             ],

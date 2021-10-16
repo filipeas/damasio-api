@@ -21,7 +21,7 @@ Route::get('/subcategoria/{subcategory}/visualizar', 'WEB\HomepageController@sho
 Route::get('/produto/{product}/visualizar', 'WEB\HomepageController@showProduct')->name('site.product');
 
 // ROTA DE LOGIN
-Route::get('/login', 'WEB\LoginController@formLogin')->name('login');
+Route::get('/login', 'WEB\LoginController@formLogin')->name('login')->middleware('guest_session');
 Route::post('login/do', 'WEB\LoginController@login')->name('login.do');
 Route::get('logout', 'WEB\LoginController@logout')->name('logout');
 

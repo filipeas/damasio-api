@@ -27,7 +27,7 @@ class SubcategoryWithProductsForDashboard extends JsonResource
 
         return [
             'id' => $this->resource->id,
-            'category' => new CategoryWithSubCategories($this->resource->parent()->first()),
+            'category' => new CategoryWithoutSubCategories($this->resource->parent()->first()),
             'title' => $this->resource->title,
             'products' => Product::collection($products),
             'pagination' => [

@@ -18,6 +18,11 @@ class CreateUsersSeeder extends Seeder
                 'email' => 'gestor_rdamasio@rdamasio.com',
                 'password' => bcrypt('123456'),
             ],
+            [
+                'name' => 'user',
+                'email' => 'user@user.com',
+                'password' => bcrypt('123456'),
+            ],
         ];
 
         foreach ($user as $key => $value) {

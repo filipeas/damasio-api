@@ -71,19 +71,19 @@ class DestroyProductTest extends TestCase
         $this->assertEquals(1, Category::whereNotNull('parent')->count());
 
         // criando grupo
-        $this->post(
-            'api/user/group',
-            [
-                'number' => 1,
-            ],
-            ['Accept' => 'application/json']
-        )
-            // ->dump()
-            ->assertStatus(200)
-            ->assertJsonStructure(['success', 'data', 'message']);
+        // $this->post(
+        //     'api/user/group',
+        //     [
+        //         'number' => 1,
+        //     ],
+        //     ['Accept' => 'application/json']
+        // )
+        //     // ->dump()
+        //     ->assertStatus(200)
+        //     ->assertJsonStructure(['success', 'data', 'message']);
 
         // contando grupos cadastradas
-        $this->assertEquals(1, Group::all()->count());
+        // $this->assertEquals(1, Group::all()->count());
 
         // criando marca
         $this->post(
@@ -122,7 +122,7 @@ class DestroyProductTest extends TestCase
             [
                 'cod' => '001 / 002',
                 'subcategory' => 2,
-                'group' => 1,
+                // 'group' => 1,
                 'brands' => [1],
                 'description' => 'descrição do produto',
                 'application' => 'aplicação do produto',

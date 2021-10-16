@@ -172,7 +172,7 @@ class ProductController extends BaseController
 
         $product->cod = $request->cod;
         $product->subcategory = $request->subcategory;
-        $product->group = $request->group;
+        // $product->group = $request->group;
         $product->description = $request->description;
         $product->application = $request->application;
         // $product->cover = $request->cover;
@@ -234,7 +234,7 @@ class ProductController extends BaseController
 
         return $this->sendResponse(
             [
-                'product' => new ProductResource($product),
+                // 'product' => new ProductResource($product),
             ],
             'Produto excluido com sucesso'
         );

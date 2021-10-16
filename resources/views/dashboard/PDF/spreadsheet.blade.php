@@ -28,8 +28,8 @@
 
         <div class="form-group">
             <label for="inputTitulo">Arquivo XML contendo os produtos a serem inseridos no banco de dados</label>
-            <p>OBS: O sistema irá excluir todos os dados do banco de dados e depois irá atualizar para os dados dessa
-                planilha.</p>
+            <p>OBS1: O sistema irá excluir todos os dados do banco de dados e depois irá atualizar para os dados dessa
+                planilha.<br>OBS2: Limite máximo de 10mb para o arquivo.</p>
             <input required name="xml" type="file" class="form-control" id="inputTitulo">
             <small class="form-text text-muted">Informe o arquivo XML que contém os produtos novos para atualizar o banco de
                 dados.</small>
