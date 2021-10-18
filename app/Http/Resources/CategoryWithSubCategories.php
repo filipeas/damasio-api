@@ -17,7 +17,7 @@ class CategoryWithSubCategories extends JsonResource
         return [
             'id' => $this->resource->id,
             'title' => $this->resource->title,
-            'pdf' => asset('storage/' . $this->resource->pdf),
+            'pdf' => ($this->resource->pdf == null ? null : asset('storage/' . $this->resource->pdf)),
             'propaganda' => ($this->resource->propaganda == null ? null : asset('storage/' . $this->resource->propaganda)),
             'title_color' => ($this->resource->title_color == null ? null : $this->resource->title_color),
             'color' => ($this->resource->color == null ? null : $this->resource->color),

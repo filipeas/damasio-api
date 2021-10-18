@@ -83,7 +83,7 @@ class GenerateFinalPDF implements ShouldQueue
         $sumario->save($path . '/sumario.pdf'); // salvando pdf do sumario gerado
 
         // atualizando posição da página corrente
-        $paginasDoSumario = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path . '/sumario.pdf')), $dummy) - 1;
+        $paginasDoSumario = preg_match_all("/\/Page\W/", utf8_encode(file_get_contents($path . '/sumario.pdf')), $dummy) + 1;
         $pagina = $paginasDoSumario + preg_match_all("/\/Page\W/", utf8_encode(file_get_contents(public_path('storage' . $this->user->pdf_fixo))), $dummy);
 
         // criando array de categorias para inserir na coluna lateral de cada página gerada

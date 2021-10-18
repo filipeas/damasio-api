@@ -188,6 +188,8 @@ class GeneratePDF implements ShouldQueue
             $sumario = PDF::loadView('sumario_final', ['categories' => $arr_categories, 'page' => $pagina]);
             $sumario->save($path_tmp . 'sumario.pdf'); // salvando pdf do sumario gerado
 
+            $filePath = Str::slug($category->title) . '_' . time();
+
             // anexação final (juntando todas as subcategorias em um único arquivo)
             $pdfMerger = PDFMerger::init();
             $pdfMerger->addPDF(public_path('storage' . $this->pdf_fixo), 'all'); // anexando as paginas fixas
@@ -199,10 +201,10 @@ class GeneratePDF implements ShouldQueue
                 $pdfMerger->addPDF($newpdf, "1-{$numPages}"); // anexando pdfs das categorias
             }
             $pdfMerger->merge();
-            $pdfMerger->save($path . Str::slug($category->title) . '_' . time() . '.pdf', "file");
+            $pdfMerger->save($path . $filePath . '.pdf', "file");
 
             // salvar caminho do PDF na categoria do banco de dados
-            $category->pdf = 'pdfs/' . Str::slug($category->title) . '_' . time() . '.pdf';
+            $category->pdf = 'pdfs/' . $filePath . '.pdf';
             $category->save();
 
             // limpando diretório temporario
