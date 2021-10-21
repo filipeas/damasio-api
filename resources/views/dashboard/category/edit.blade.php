@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <p class="small">OBS1: Limite máximo de 2mb para o arquivo. Inserir somente PDF.<br>OBS2: Sempre
                         colocar uma página em branco a mais no PDF, no final no arquivo.</p>
-                    <label for="inputFile">Título da categoria</label>
+                    <label for="inputFile">Propaganda para a categoria</label>
                     <input name="propaganda" type="file" class="form-control" id="inputFile">
                     <small class="form-text text-muted">Insira um arquivo de propaganda para que seja usada quando for
                         gerado
